@@ -29,18 +29,18 @@ public class PurchaseAgreement {
             return this;
         }
 
-        private FlatDocument.Builder setDocName(String docName) {
-            this.docName = docName;
+        private Builder setFlatId(long flatId) {
+            this.flatId = flatId;
             return this;
         }
 
-        private FlatDocument.Builder setDocContent(String docContent) {
-            this.docContent = docContent;
+        private Builder setBrokerId(long brokerId) {
+            this.brokerId = brokerId;
             return this;
         }
 
-        private FlatDocument.Builder setUrlStateRegister(String urlStateRegister) {
-            this.urlStateRegister = urlStateRegister;
+        private Builder setLocalDate(LocalDate localDate) {
+            this.localDate = localDate;
             return this;
         }
 
@@ -50,11 +50,11 @@ public class PurchaseAgreement {
     }
 
     private PurchaseAgreement(Builder builder) {
-        this.documentId = builder.documentId;
-        this.docContent = builder.docContent;
-        this.docName = builder.docName;
-        this.docType = builder.docType;
-        this.urlStateRegister = builder.urlStateRegister;
+        this.brokerId = builder.brokerId;
+        this.flatId = builder.flatId;
+        this.purchaseAgreementId = builder.purchaseAgreementId;
+        this.isCentralFirmApproved = builder.isCentralFirmApproved;
+        this.localDate = builder.localDate;
     }
 
     public Long getPurchaseAgreementId() {
