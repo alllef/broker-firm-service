@@ -22,17 +22,17 @@ public class PurchaseAgreement {
             this.purchaseAgreementId = purchaseAgreementId;
         }
 
-        private Builder isCentralFirmApproved(boolean isCentralFirmApproved) {
+        public Builder isCentralFirmApproved(boolean isCentralFirmApproved) {
             this.isCentralFirmApproved = isCentralFirmApproved;
             return this;
         }
 
-        private Builder setFlatId(long flatId) {
+        public Builder setFlatId(long flatId) {
             this.flatId = flatId;
             return this;
         }
 
-        private Builder setLocalDate(LocalDate localDate) {
+        public Builder setLocalDate(LocalDate localDate) {
             this.localDate = localDate;
             return this;
         }

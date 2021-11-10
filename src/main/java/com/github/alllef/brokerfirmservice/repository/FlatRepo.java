@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface FlatRepository extends JpaRepository<Flat, Long> {
+public interface FlatRepo extends JpaRepository<Flat, Long> {
 
     List<Flat> findByBrokerId(long brokerId);
 

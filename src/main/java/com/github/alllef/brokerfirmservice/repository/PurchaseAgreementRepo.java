@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PurchaseAgreementRepository extends JpaRepository<Long, PurchaseAgreement> {
+public interface PurchaseAgreementRepo extends JpaRepository<PurchaseAgreement,Long> {
 
     List<PurchaseAgreement> findByBroker(Long brokerId);
 
