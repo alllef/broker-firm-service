@@ -10,14 +10,12 @@ public class PurchaseAgreement {
     private Long purchaseAgreementId;
     private boolean isCentralFirmApproved;
     private Long flatId;
-    private Long brokerId;
     private LocalDate localDate;
 
     public static class Builder {
         private Long purchaseAgreementId;
         private boolean isCentralFirmApproved;
         private Long flatId;
-        private Long brokerId;
         private LocalDate localDate;
 
         public Builder(long purchaseAgreementId) {
@@ -34,11 +32,6 @@ public class PurchaseAgreement {
             return this;
         }
 
-        private Builder setBrokerId(long brokerId) {
-            this.brokerId = brokerId;
-            return this;
-        }
-
         private Builder setLocalDate(LocalDate localDate) {
             this.localDate = localDate;
             return this;
@@ -50,7 +43,6 @@ public class PurchaseAgreement {
     }
 
     private PurchaseAgreement(Builder builder) {
-        this.brokerId = builder.brokerId;
         this.flatId = builder.flatId;
         this.purchaseAgreementId = builder.purchaseAgreementId;
         this.isCentralFirmApproved = builder.isCentralFirmApproved;
@@ -69,9 +61,6 @@ public class PurchaseAgreement {
         return flatId;
     }
 
-    public Long getBrokerId() {
-        return brokerId;
-    }
 
     public LocalDate getLocalDate() {
         return localDate;
@@ -88,8 +77,6 @@ public class PurchaseAgreement {
         if (getPurchaseAgreementId() != null ? !getPurchaseAgreementId().equals(that.getPurchaseAgreementId()) : that.getPurchaseAgreementId() != null)
             return false;
         if (getFlatId() != null ? !getFlatId().equals(that.getFlatId()) : that.getFlatId() != null) return false;
-        if (getBrokerId() != null ? !getBrokerId().equals(that.getBrokerId()) : that.getBrokerId() != null)
-            return false;
         return getLocalDate() != null ? getLocalDate().equals(that.getLocalDate()) : that.getLocalDate() == null;
     }
 
@@ -98,7 +85,6 @@ public class PurchaseAgreement {
         int result = getPurchaseAgreementId() != null ? getPurchaseAgreementId().hashCode() : 0;
         result = 31 * result + (isCentralFirmApproved() ? 1 : 0);
         result = 31 * result + (getFlatId() != null ? getFlatId().hashCode() : 0);
-        result = 31 * result + (getBrokerId() != null ? getBrokerId().hashCode() : 0);
         result = 31 * result + (getLocalDate() != null ? getLocalDate().hashCode() : 0);
         return result;
     }
@@ -109,7 +95,6 @@ public class PurchaseAgreement {
                 "purchaseAgreementId=" + purchaseAgreementId +
                 ", isCentralFirmApproved=" + isCentralFirmApproved +
                 ", flatId=" + flatId +
-                ", brokerId=" + brokerId +
                 ", localDate=" + localDate +
                 '}';
     }
