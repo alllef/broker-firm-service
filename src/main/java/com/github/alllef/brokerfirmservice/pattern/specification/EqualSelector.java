@@ -1,4 +1,4 @@
-package com.github.alllef.brokerfirmservice.selector;
+package com.github.alllef.brokerfirmservice.pattern.specification;
 
 public class EqualSelector<T> extends AbstractSelector<T> {
     private final T tFirst;

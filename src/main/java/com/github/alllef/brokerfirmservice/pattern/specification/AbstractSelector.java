@@ -1,4 +1,4 @@
-package com.github.alllef.brokerfirmservice.selector;
+package com.github.alllef.brokerfirmservice.pattern.specification;
 
 import java.util.function.Predicate;
 

@@ -30,6 +30,14 @@ public class CentralDepartment {
     public void setBrokerForRequest(Flat flatRequest) {
         Broker broker = this.getLeastBusyBroker();
         Flat flat = new Flat.Builder(flatRequest.getFlatId())
+                .setBrokerId(broker.getBrokerId())
+                .setAreaNumber(flatRequest.getAreaNumber())
+                .setDescription(flatRequest.getDescription())
+                .setClientId(flatRequest.getClientId())
+                .setFloorNumber(flatRequest.getFloorNumber())
+                .setRoomsNumber(flatRequest.getRoomsNumber())
+                .setPrice(flatRequest.getPrice())
+                .build();
 
     }
 

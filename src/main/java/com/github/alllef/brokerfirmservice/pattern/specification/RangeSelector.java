@@ -1,6 +1,4 @@
-package com.github.alllef.brokerfirmservice.selector;
-
-import java.util.Comparator;
+package com.github.alllef.brokerfirmservice.pattern.specification;
 
 public class RangeSelector<T extends Comparable<T>> extends AbstractSelector<T> {
     private final T leftBound;
