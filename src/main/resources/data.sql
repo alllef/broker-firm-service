@@ -1,0 +1,1 @@
+ insert into client(email,first_name,last_name,phone_number)values ('bb@gmail.com','Alexandr','Lipovetskii','+380957088791');

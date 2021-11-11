@@ -15,8 +15,8 @@ DROP TABLE IF EXISTS flat CASCADE;
 
 CREATE TABLE broker (
 	broker_id serial NOT NULL,
-	firstname varchar(1024) NOT NULL,
-	lastname varchar(1024) NOT NULL,
+	first_name varchar(1024) NOT NULL,
+	last_name varchar(1024) NOT NULL,
 	phone_number varchar(1024) NOT NULL,
 	email varchar(1024) NOT NULL,
 	CONSTRAINT broker_pkey PRIMARY KEY (broker_id)
@@ -24,8 +24,8 @@ CREATE TABLE broker (
 
 CREATE TABLE client (
 	client_id serial NOT NULL,
-	firstname varchar(1024) NOT NULL,
-	lastname varchar(1024) NOT NULL,
+	first_name varchar(1024) NOT NULL,
+	last_name varchar(1024) NOT NULL,
 	email varchar(1024) NULL,
 	phone_number varchar(1024) NOT NULL,
 	client_address text,
