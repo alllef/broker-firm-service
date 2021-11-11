@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Builder(toBuilder = true)
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode
 @ToString

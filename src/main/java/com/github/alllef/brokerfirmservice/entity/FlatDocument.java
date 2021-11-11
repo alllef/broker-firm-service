@@ -11,6 +11,7 @@ import javax.persistence.Id;
 @Entity
 @Builder(toBuilder = true)
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode
 @ToString
