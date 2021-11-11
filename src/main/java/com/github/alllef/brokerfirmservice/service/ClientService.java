@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientService {
 
-    public void createClient(Client client){
+    public void createClient(Client client){}
+    public void createFlat(Flat flat){
 
     }
 
-    public void createFlat(Flat flat){}
 }

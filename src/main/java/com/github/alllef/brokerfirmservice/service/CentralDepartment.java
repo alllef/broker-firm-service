@@ -7,12 +7,14 @@ import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.repository.BrokerRepo;
 import com.github.alllef.brokerfirmservice.repository.FlatRepo;
 import com.github.alllef.brokerfirmservice.repository.PurchaseAgreementRepo;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class CentralDepartment {
     private final BrokerRepo brokerRepo;
     private final PurchaseAgreementRepo purchaseAgreementRepo;
@@ -24,27 +26,21 @@ public class CentralDepartment {
                 .min(Comparator.comparingInt(BrokerFlatView::getFlatNum));
 
         Long id = optionalBrokerFlatView.orElseThrow().getBrokerId();
+
         return brokerRepo.findById(id).orElseThrow();
     }
 
     public void setBrokerForRequest(Flat flatRequest) {
         Broker broker = this.getLeastBusyBroker();
-        Flat flat = new Flat.Builder(flatRequest.getFlatId())
-                .setBrokerId(broker.getBrokerId())
-                .setAreaNumber(flatRequest.getAreaNumber())
-                .setDescription(flatRequest.getDescription())
-                .setClientId(flatRequest.getClientId())
-                .setFloorNumber(flatRequest.getFloorNumber())
-                .setRoomsNumber(flatRequest.getRoomsNumber())
-                .setPrice(flatRequest.getPrice())
+        Flat flat = flatRequest.toBuilder()
+                .brokerId(broker.getBrokerId())
                 .build();
 
+        flatRepo.save(flat);
     }
 
     public void approvePurchaseAgreement(PurchaseAgreement purchaseAgreement) {
-        PurchaseAgreement approvedPurchaseAgreement = new PurchaseAgreement.Builder(purchaseAgreement.getPurchaseAgreementId())
-                .setFlatId(purchaseAgreement.getFlatId())
-                .setLocalDate(purchaseAgreement.getLocalDate())
+        PurchaseAgreement approvedPurchaseAgreement = purchaseAgreement.toBuilder()
                 .isCentralFirmApproved(true)
                 .build();
 
