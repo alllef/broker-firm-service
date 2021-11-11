@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +29,10 @@ public class BrokerService {
                 .build();
 
         flatRepo.save(registered);
+    }
+
+    public List<PurchaseAgreement> getAgreementsByBrokerId(Long brokerId) {
+        return purchaseAgreementRepo.findByBrokerId(brokerId);
     }
 
     public void addClientAddresses(Client client) {

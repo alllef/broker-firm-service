@@ -14,4 +14,6 @@ public interface BrokerRepo extends JpaRepository<Broker,Long> {
                         where is_central_firm_approved = false  group by broker_id""",
             nativeQuery = true)
     List<BrokerFlatView> getGroupedBrokers();
+
+
 }

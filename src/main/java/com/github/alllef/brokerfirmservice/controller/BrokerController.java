@@ -1,10 +1,25 @@
 package com.github.alllef.brokerfirmservice.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
+import com.github.alllef.brokerfirmservice.service.BrokerService;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/brokers")
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/brokers")
 public class BrokerController {
+    private final BrokerService brokerService;
 
+    @GetMapping("/{id}/purchaseAgreements")
+    List<PurchaseAgreement> getPurchaseAgreement(@PathVariable Long id) {
+        return brokerService.getAgreementsByBrokerId(id);
+    }
 
+    @GetMapping("/{id}/approvedFlats")
+    List<PurchaseAgreement> getPurchaseAgreement(@PathVariable Long id) {
+        return brokerService.getAgreementsByBrokerId(id);
+    }
 }
