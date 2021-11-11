@@ -10,5 +10,5 @@ public interface FlatRepo extends JpaRepository<Flat, Long> {
 
     List<Flat> findByBrokerId(long brokerId);
 
-    List<Flat> findByBrokerNull();
+    List<Flat> findByBrokerIdNull();
 }
