@@ -12,5 +12,10 @@ public interface FlatRepo extends JpaRepository<Flat, Long> {
 
     List<Flat> findByBrokerIdNull();
 
-    List<Flat> findByBrokerIdAndIsBrokerAcceptedTrue(long brokerId);
+    List<Flat> findByBrokerIdAndIsBrokerAccepted(long brokerId,boolean isBrokerAccepted);
+
+    @Query(value = "select * from flat f  join purchase_agreement pa using(flat_id) where is_central_firm_approved = ? AND broker_id = ?",
+            nativeQuery = true)
+    List<Flat> getFlatsByBrokerIdAnIsCentralFirmApproved(Long brokerId, boolean isCentralFirmApproved);
+
 }

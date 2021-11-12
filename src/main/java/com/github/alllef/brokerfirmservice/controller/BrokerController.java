@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -21,27 +22,28 @@ public class BrokerController {
     }
 
     @GetMapping("/{id}")
-    public Broker getBroker(){
+    public Broker getBroker() {
 
     }
 
     @PostMapping
-    public void createBroker(){}
+    public void createBroker() {
+    }
 
     @PutMapping("/{id}")
-    public void updateBroker(){
+    public void updateBroker() {
 
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBroker(){
+    public void deleteBroker() {
 
     }
 
     @GetMapping("/{id}/flats")
-    List<Flat> getApprovedFlats(@PathVariable Long id, @RequestParam(required = false) boolean isBrokerApproved,
-                                @RequestParam(required = false) boolean isAgreementClosed) {
-        return brokerService.getApprovedFlats(id);
+    List<Flat> getFlats(@PathVariable Long id, @RequestParam(required = false) Optional<Boolean> isBrokerApproved,
+                                @RequestParam(required = false) Optional<Boolean> isAgreementClosed) {
+        return brokerService.getFlats(id);
     }
 
 }
