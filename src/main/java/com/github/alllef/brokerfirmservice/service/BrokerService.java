@@ -51,13 +51,11 @@ public class BrokerService {
     public List<Flat> getFlats(long brokerId, Optional<Boolean> isBrokerApproved, Optional<Boolean> isAgreementClosed) {
         if (isBrokerApproved.isEmpty() && isAgreementClosed.isEmpty())
             return flatRepo.findByBrokerId(brokerId);
-        else if (isBrokerApproved.isPresent()) {
-            if (isAgreementClosed.isPresent() && isBrokerApproved.get())
-                return flatRepo.getFlatsByBrokerIdAnIsCentralFirmApproved(brokerId, isAgreementClosed.get());
-            else
-                return flatRepo.findByBrokerIdAndIsBrokerAccepted(brokerId, isBrokerApproved.get());
-        } else
-
+        else if (isAgreementClosed.isPresent() && (isBrokerApproved.isEmpty() || isBrokerApproved.get()))
+            return flatRepo.getFlatsByBrokerIdAnIsCentralFirmApproved(brokerId, isAgreementClosed.get());
+        else if (isBrokerApproved.isPresent())
+            return flatRepo.findByBrokerIdAndIsBrokerAccepted(brokerId, isBrokerApproved.get());
+        else
             return new ArrayList<>();
     }
 

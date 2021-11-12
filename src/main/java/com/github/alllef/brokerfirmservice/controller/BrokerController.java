@@ -22,28 +22,29 @@ public class BrokerController {
     }
 
     @GetMapping("/{id}")
-    public Broker getBroker() {
-
+    public Broker getBroker(@PathVariable Long id) {
+        return brokerService.getBroker(id);
     }
 
     @PostMapping
-    public void createBroker() {
+    public void createBroker(@RequestBody Broker broker) {
+        brokerService.createBroker(broker);
     }
 
     @PutMapping("/{id}")
-    public void updateBroker() {
-
+    public void updateBroker(@PathVariable Long id, @RequestParam Broker broker) {
+        brokerService.updateBroker(broker);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBroker() {
-
+    public void deleteBroker(@PathVariable Long id) {
+        brokerService.deleteBroker(id);
     }
 
     @GetMapping("/{id}/flats")
     List<Flat> getFlats(@PathVariable Long id, @RequestParam(required = false) Optional<Boolean> isBrokerApproved,
-                                @RequestParam(required = false) Optional<Boolean> isAgreementClosed) {
-        return brokerService.getFlats(id);
+                        @RequestParam(required = false) Optional<Boolean> isAgreementClosed) {
+        return brokerService.getFlats(id, isBrokerApproved, isAgreementClosed);
     }
 
 }
