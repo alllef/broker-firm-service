@@ -14,17 +14,22 @@ public class ClientController {
     private final ClientRepo clientRepo;
 
     @GetMapping
-    List<Client> getAll() {
+    public List<Client> getAll() {
         return clientRepo.findAll();
     }
 
     @PostMapping
-    void createClient(@RequestBody Client client){
+    public void createClient(@RequestBody Client client) {
         clientRepo.save(client);
     }
 
+    @GetMapping("/{id}")
+    void getClient() {
+
+    }
+
     @PutMapping("/{id}")
-    void updateClient(@PathVariable Long id,@RequestBody Client client){
+    void updateClient(@PathVariable Long id, @RequestBody Client client) {
         clientRepo.save(client);
     }
 

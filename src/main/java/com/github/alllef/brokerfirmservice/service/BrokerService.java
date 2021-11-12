@@ -23,12 +23,16 @@ public class BrokerService {
     private final AgreementDocumentRepo agreementDocumentRepo;
     private final PurchaseAgreementRepo purchaseAgreementRepo;
 
-    public void registerFlat(Broker broker, Flat flat) {
+    public void registerFlat(Flat flat) {
         Flat registered = flat.toBuilder()
                 .isBrokerAccepted(true)
                 .build();
 
         flatRepo.save(registered);
+    }
+
+    public List<Flat> getApprovedFlats(long brokerId) {
+        return flatRepo.findByBrokerIdAndIsBrokerAcceptedTrue(brokerId);
     }
 
     public List<PurchaseAgreement> getAgreementsByBrokerId(Long brokerId) {
