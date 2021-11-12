@@ -20,7 +20,7 @@ public class ClientService {
     }
 
     public void createFlat(Flat flat) {
-        flatRepo.createFlat(flat.getClientId(), flat.getFloorNumber(), flat.ge, flat.getPrice(), flat.getRoomsNumber(), flat.getDescription());
+        flatRepo.createFlat(flat.getClientId(), flat.getFloorNumber(), flat.getTotalArea(), flat.getPrice(), flat.getRoomsNumber(), flat.getDescription());
         flatCreatedEvent.onFlatCreated(flat);
     }
 

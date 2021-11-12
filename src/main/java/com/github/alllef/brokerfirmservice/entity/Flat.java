@@ -19,7 +19,7 @@ public class Flat {
     private Long brokerId;
     private boolean isBrokerAccepted;
     private int floorNumber;
-    private int areaNumber;
+    private int totalArea;
     private int roomsNumber;
     private int price;
     private String description;

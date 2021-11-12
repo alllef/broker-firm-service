@@ -18,5 +18,5 @@ public class FlatPhoto {
     @Id
     private Long flatPhotoId;
     private Long flatId;
-    private File photo;
+    private String photoUrl;
 }

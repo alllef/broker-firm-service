@@ -44,7 +44,7 @@ CREATE TABLE flat_document (
 CREATE TABLE flat_photo (
 	flat_photo_id serial NOT NULL,
 	flat_id int8 NOT NULL,
-	photo bytea NOT NULL,
+	photo_url text NOT NULL,
 	CONSTRAINT flat_photo_pkey PRIMARY KEY (flat_photo_id)
 );
 
