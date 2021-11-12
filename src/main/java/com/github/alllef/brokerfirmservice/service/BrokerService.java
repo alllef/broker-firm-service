@@ -9,6 +9,7 @@ import com.github.alllef.brokerfirmservice.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class BrokerService {
     private final PurchaseAgreementRepo purchaseAgreementRepo;
     private final BrokerRepo brokerRepo;
 
+    @Transactional
     public void registerFlat(Flat flat) {
         Flat registered = flat.toBuilder()
                 .isBrokerAccepted(true)
@@ -32,10 +34,12 @@ public class BrokerService {
         flatRepo.save(registered);
     }
 
+    @Transactional
     public void createBroker(Broker broker) {
         brokerRepo.createBroker(broker.getFirstName(), broker.getLastName(), broker.getPhoneNumber(), broker.getEmail());
     }
 
+    @Transactional
     public void updateBroker(Broker broker) {
         brokerRepo.save(broker);
     }
@@ -44,6 +48,7 @@ public class BrokerService {
         return brokerRepo.findById(brokerId).orElseThrow();
     }
 
+    @Transactional
     public void deleteBroker(Long brokerId) {
         brokerRepo.deleteById(brokerId);
     }
@@ -63,10 +68,12 @@ public class BrokerService {
         return purchaseAgreementRepo.findByBrokerId(brokerId);
     }
 
+    @Transactional
     public void addClientAddresses(Client client) {
         clientRepo.save(client);
     }
 
+    @Transactional
     public void createPurchaseAgreement(Flat flat) {
         PurchaseAgreement agreement = PurchaseAgreement.builder()
                 .flatId(flat.getFlatId())
@@ -76,6 +83,7 @@ public class BrokerService {
         purchaseAgreementRepo.save(agreement);
     }
 
+    @Transactional
     public void approveDocument(AgreementDocument agreementDocument) {
         agreementDocument.toBuilder()
                 .isBrokerApproved(true)
