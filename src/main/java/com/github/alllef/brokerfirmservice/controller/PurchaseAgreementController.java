@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/purchaseAgreements")
 public class PurchaseAgreementController {
 
-    @GetMapping("/{id}/documents")
+    /*@GetMapping("/{id}/documents")
     public List<AgreementDocument> getAgreementDocuments(Long id) {
 
     }
@@ -21,7 +21,7 @@ public class PurchaseAgreementController {
     public List<PurchaseAgreement> getPurchaseAgreements(@RequestParam(required = false) boolean allDocumentsAccepted,
                                                          @RequestParam(required = false) boolean isCentralFirmApproved) {
 
-    }
+    }*/
 
     @PostMapping
     public void createPurchaseAgreement() {}

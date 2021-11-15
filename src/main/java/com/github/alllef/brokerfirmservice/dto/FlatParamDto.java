@@ -4,6 +4,7 @@ import lombok.*;
 
 @Builder(toBuilder = true)
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode
 @ToString

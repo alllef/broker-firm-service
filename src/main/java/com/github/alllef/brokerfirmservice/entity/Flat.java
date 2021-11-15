@@ -16,6 +16,7 @@ public class Flat {
     @Id
     private Long flatId;
     private Long clientId;
+    private Long buyerId;
     private Long brokerId;
     private boolean isBrokerAccepted;
     private int floorNumber;

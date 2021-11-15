@@ -52,6 +52,7 @@ CREATE TABLE flat (
 	flat_id serial NOT NULL,
 	client_id int8 NOT NULL,
 	broker_id int8 NOT NULL,
+	buyer_id int8,
 	is_broker_accepted boolean DEFAULT FALSE,
 	floor_number int4 NOT NULL,
 	total_area int4 NOT NULL,

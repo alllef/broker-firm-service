@@ -31,8 +31,8 @@ public class FlatController {
         clientService.deleteFlat(id);
     }
 
-    @GetMapping("/{id}/flat-requests")
-    public List<FlatRequest> getRequests(@PathVariable Long id) {
+        @GetMapping("/{id}/flat-requests")
+  public List<FlatRequest> getRequests(@PathVariable Long id) {
         return brokerService.getFlatRequests(id);
     }
 }

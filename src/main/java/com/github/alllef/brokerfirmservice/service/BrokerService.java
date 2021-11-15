@@ -79,7 +79,7 @@ public class BrokerService {
                 .build()
                 .post()
                 .uri("/flat-requests")
-                .body(mapper.map(flat, FlatParamDto.class), Flat.class)
+                .bodyValue(mapper.map(flat, FlatParamDto.class))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(FlatRequest[].class)

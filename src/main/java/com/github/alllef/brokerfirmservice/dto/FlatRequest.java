@@ -2,11 +2,9 @@ package com.github.alllef.brokerfirmservice.dto;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 @Builder(toBuilder = true)
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode
 @ToString
