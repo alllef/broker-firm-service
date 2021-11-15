@@ -4,6 +4,7 @@ import com.github.alllef.brokerfirmservice.dto.FlatParamDto;
 import com.github.alllef.brokerfirmservice.dto.FlatRequest;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
+import com.github.alllef.brokerfirmservice.entity.FlatDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
@@ -99,13 +100,25 @@ public class BrokerService {
     }
 
     @Transactional
-    public void createPurchaseAgreement(Flat flat) {
+    public void createPurchaseAgreement(Long flatId) {
         PurchaseAgreement agreement = PurchaseAgreement.builder()
-                .flatId(flat.getFlatId())
+                .flatId(flatId)
                 .localDate(LocalDate.now())
                 .build();
-
         purchaseAgreementRepo.save(agreement);
+
+        FlatDocument[] response = WebClient.create("http://localhost:8082")
+                .get()
+                .uri("/flat-documents/" + flatId)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(FlatDocument[].class)
+                .block();
+
+        for (FlatDocument doc : response){
+agreementDocumentRepo
+        }
+
     }
 
     @Transactional
