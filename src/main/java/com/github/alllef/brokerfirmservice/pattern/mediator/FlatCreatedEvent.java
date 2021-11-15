@@ -1,6 +1,5 @@
-package com.github.alllef.brokerfirmservice.pattern.memento;
+package com.github.alllef.brokerfirmservice.pattern.mediator;
 
-import com.github.alllef.brokerfirmservice.entity.Flat;
 import com.github.alllef.brokerfirmservice.service.BrokerService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class FlatCreatedEvent {
     private final BrokerService brokerService;
 
-    public void onFlatCreated(Flat flat) {
-        brokerService.registerFlat(flat);
+    public void onFlatCreated() {
+        brokerService.registerFlat();
     }
 }

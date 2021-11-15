@@ -1,10 +1,13 @@
 package com.github.alllef.brokerfirmservice;
 
-import com.github.alllef.brokerfirmservice.entity.Flat;
-import com.github.alllef.brokerfirmservice.pattern.specification.AbstractSelector;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BasicConfiguration {
-
+    @Bean
+    public ModelMapper getModelMapper() {
+        return new ModelMapper();
+    }
 }

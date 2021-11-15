@@ -1,5 +1,7 @@
 package com.github.alllef.brokerfirmservice.service;
 
+import com.github.alllef.brokerfirmservice.dto.FlatParamDto;
+import com.github.alllef.brokerfirmservice.dto.FlatRequest;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
@@ -7,14 +9,15 @@ import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
 import com.github.alllef.brokerfirmservice.repository.*;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -24,14 +27,18 @@ public class BrokerService {
     private final AgreementDocumentRepo agreementDocumentRepo;
     private final PurchaseAgreementRepo purchaseAgreementRepo;
     private final BrokerRepo brokerRepo;
+    private final ModelMapper mapper;
 
     @Transactional
-    public void registerFlat(Flat flat) {
-        Flat registered = flat.toBuilder()
-                .isBrokerAccepted(true)
-                .build();
+    public void registerFlat() {
+        List<Flat> flatsWithoutBroker = flatRepo.findByBrokerIdNull();
+        for (Flat flat : flatsWithoutBroker) {
+            Flat registered = flat.toBuilder()
+                    .isBrokerAccepted(true)
+                    .build();
 
-        flatRepo.save(registered);
+            flatRepo.save(registered);
+        }
     }
 
     @Transactional
@@ -62,6 +69,24 @@ public class BrokerService {
             return flatRepo.findByBrokerIdAndIsBrokerAccepted(brokerId, isBrokerApproved.get());
         else
             return new ArrayList<>();
+    }
+
+    public List<FlatRequest> getFlatRequests(long flatId) {
+        Flat flat = flatRepo.findById(flatId).orElseThrow();
+
+        FlatRequest[] response = WebClient.builder().baseUrl("http://localhost:8081")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build()
+                .post()
+                .uri("/flat-requests")
+                .body(mapper.map(flat, FlatParamDto.class), Flat.class)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(FlatRequest[].class)
+                .block();
+
+        return Arrays.stream(response)
+                .toList();
     }
 
     public List<PurchaseAgreement> getAgreementsByBrokerId(Long brokerId) {
