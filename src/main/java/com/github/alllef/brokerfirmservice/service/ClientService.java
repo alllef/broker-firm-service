@@ -24,8 +24,8 @@ public class ClientService {
     }
 
     public void createFlat(Flat flat) {
-        flatRepo.createFlat(flat.getClientId(), flat.getFloorNumber(), flat.getTotalArea(), flat.getPrice(), flat.getRoomsNumber(), flat.getDescription());
-        flatCreatedEvent.onFlatCreated();
+        flatRepo.save(flat);
+        flatCreatedEvent.onFlatCreated(flat);
     }
 
     public void updateFlat(Flat flat) {
@@ -34,8 +34,6 @@ public class ClientService {
 
     public void deleteFlat(Long flatId) {
         flatRepo.deleteById(flatId);
-
-
     }
 
 }

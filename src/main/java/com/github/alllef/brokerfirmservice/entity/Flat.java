@@ -21,6 +21,7 @@ public class Flat {
     private Long clientId;
     private Long buyerId;
     private Long brokerId;
+    private String urlStateId;
     private boolean isBrokerAccepted;
     private int floorNumber;
     private int totalArea;

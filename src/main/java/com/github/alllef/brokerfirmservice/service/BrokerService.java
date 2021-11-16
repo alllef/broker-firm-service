@@ -30,8 +30,8 @@ public class BrokerService {
     private final BrokerRepo brokerRepo;
     private final ModelMapper mapper;
 
-    @Transactional
-    public void registerFlat() {
+    /*@Transactional
+    public void registerFlat(Flat flat) {
         List<Flat> flatsWithoutBroker = flatRepo.findByBrokerIdNull();
         for (Flat flat : flatsWithoutBroker) {
             Flat registered = flat.toBuilder()
@@ -40,7 +40,7 @@ public class BrokerService {
 
             flatRepo.save(registered);
         }
-    }
+    }*/
 
     @Transactional
     public void createBroker(Broker broker) {
@@ -101,6 +101,8 @@ public class BrokerService {
 
     @Transactional
     public void createPurchaseAgreement(Long flatId) {
+        Flat flat = flatRepo.findById(flatId).orElseThrow();
+
         PurchaseAgreement agreement = PurchaseAgreement.builder()
                 .flatId(flatId)
                 .localDate(LocalDate.now())
@@ -110,14 +112,18 @@ public class BrokerService {
 
         FlatDocument[] response = WebClient.create("http://localhost:8082")
                 .get()
-                .uri("/flat-documents/" + flatId)
+                .uri("/flat-documents/" + flat.getUrlStateId())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(FlatDocument[].class)
                 .block();
 
-      //  for (FlatDocument doc : response)
-            //agreementDocumentRepo.createDocument(result.getPurchaseAgreementId(), );
+        for (FlatDocument doc : response) {
+            AgreementDocument.builder()
+                    .purchaseAgreementId(result.getPurchaseAgreementId())
+                    .urlStateRegister(flat.getUrlStateId())
+                    .build();
+        }
 
     }
 

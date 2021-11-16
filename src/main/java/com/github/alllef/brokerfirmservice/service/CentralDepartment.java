@@ -10,6 +10,7 @@ import com.github.alllef.brokerfirmservice.repository.PurchaseAgreementRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -25,11 +26,14 @@ public class CentralDepartment {
                 .stream()
                 .min(Comparator.comparingInt(BrokerFlatView::getFlatNum));
 
-        Long id = optionalBrokerFlatView.orElseThrow().getBrokerId();
+        Long id = optionalBrokerFlatView.orElseThrow()
+                .getBrokerId();
 
-        return brokerRepo.findById(id).orElseThrow();
+        return brokerRepo.findById(id)
+                .orElseThrow();
     }
 
+    @Transactional
     public void setBrokerForRequest(Flat flatRequest) {
         Broker broker = this.getLeastBusyBroker();
         Flat flat = flatRequest.toBuilder()
