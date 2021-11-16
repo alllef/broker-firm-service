@@ -3,6 +3,8 @@ package com.github.alllef.brokerfirmservice.entity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 @ToString
 public class Flat {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long flatId;
     private Long clientId;
     private Long buyerId;

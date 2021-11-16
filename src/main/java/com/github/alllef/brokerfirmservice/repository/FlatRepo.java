@@ -19,9 +19,4 @@ public interface FlatRepo extends JpaRepository<Flat, Long> {
             nativeQuery = true)
     List<Flat> getFlatsByBrokerIdAnIsCentralFirmApproved(Long brokerId, boolean isCentralFirmApproved);
 
-    @Modifying
-    @Query(value = " insert into flat(client_id,floor_number,total_area,price,rooms_number,description)values(?,?,?,?,?,?)",
-            nativeQuery = true)
-    void createFlat(Long clientId,int floorNumber,int totalArea,int price,int roomsNumber,String description);
-
 }

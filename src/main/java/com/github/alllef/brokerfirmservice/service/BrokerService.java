@@ -44,7 +44,7 @@ public class BrokerService {
 
     @Transactional
     public void createBroker(Broker broker) {
-        brokerRepo.createBroker(broker.getFirstName(), broker.getLastName(), broker.getPhoneNumber(), broker.getEmail());
+        brokerRepo.save(broker);
     }
 
     @Transactional
@@ -105,7 +105,8 @@ public class BrokerService {
                 .flatId(flatId)
                 .localDate(LocalDate.now())
                 .build();
-        purchaseAgreementRepo.save(agreement);
+
+        PurchaseAgreement result = purchaseAgreementRepo.save(agreement);
 
         FlatDocument[] response = WebClient.create("http://localhost:8082")
                 .get()
@@ -115,9 +116,8 @@ public class BrokerService {
                 .bodyToMono(FlatDocument[].class)
                 .block();
 
-        for (FlatDocument doc : response){
-agreementDocumentRepo
-        }
+      //  for (FlatDocument doc : response)
+            //agreementDocumentRepo.createDocument(result.getPurchaseAgreementId(), );
 
     }
 

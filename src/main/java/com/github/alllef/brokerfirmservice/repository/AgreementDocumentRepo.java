@@ -11,9 +11,4 @@ public interface AgreementDocumentRepo extends JpaRepository<AgreementDocument, 
 
     List<AgreementDocument> findByPurchaseAgreementId(Long purchaseAgreementId);
 
-    @Modifying
-    @Query(value = "insert into agreement_document(purchase_agreement_id,url_state_register)values(?,?)",
-            nativeQuery = true)
-    void createDocument(Long purchaseAgreementId,String urlStateRegister);
-
 }
