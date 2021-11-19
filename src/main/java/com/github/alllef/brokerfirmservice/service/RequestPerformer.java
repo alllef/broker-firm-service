@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Component
 public class RequestPerformer {
-    private List<FlatRequestDto> getFilteredFlatRequestsDto(Flat flat) {
+    public List<FlatRequestDto> getFilteredFlatRequestsDto(Flat flat) {
 
         FlatRequestDto[] response = WebClient.builder().baseUrl("http://localhost:8081")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +40,7 @@ public class RequestPerformer {
                 .orElse(new ArrayList<>());
     }
 
-    private List<FlatRequest> getAllFlatRequests() {
+    public List<FlatRequest> getAllFlatRequests() {
         FlatRequest[] response = WebClient.builder().baseUrl("http://localhost:8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build()
@@ -56,7 +56,7 @@ public class RequestPerformer {
                 .orElse(new ArrayList<>());
     }
 
-    private Client getRequestClientById(Long clientId) {
+    public Client getRequestClientById(Long clientId) {
 
         return WebClient.builder().baseUrl("http://localhost:8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

@@ -4,6 +4,7 @@ ALTER TABLE IF EXISTS flat DROP CONSTRAINT IF EXISTS fk_broker;
 ALTER TABLE IF EXISTS purchase_agreement DROP CONSTRAINT IF EXISTS fk_flat;
 ALTER TABLE IF EXISTS agreement_document DROP CONSTRAINT IF EXISTS fk_purchase_agreement;
 ALTER TABLE IF EXISTS flat_photo DROP CONSTRAINT IF EXISTS fk_flat;
+ALTER TABLE IF EXISTS agreement_document DROP CONSTRAINT IF EXISTS fk_flat_document;
 
 DROP TABLE IF EXISTS broker CASCADE;
 DROP TABLE IF EXISTS client CASCADE;
@@ -36,7 +37,6 @@ CREATE TABLE flat (
 	flat_id serial NOT NULL,
 	client_id int8 NOT NULL,
 	broker_id int8 NOT NULL,
-	url_state_id varchar(1024),
 	buyer_id int8,
 	is_broker_accepted boolean DEFAULT FALSE,
 	floor_number int4 NOT NULL,
@@ -58,7 +58,6 @@ CREATE TABLE flat_photo (
 );
 
 
-
 CREATE TABLE purchase_agreement (
 	purchase_agreement_id serial NOT NULL,
 	is_central_firm_approved bool DEFAULT FALSE,
@@ -68,11 +67,21 @@ CREATE TABLE purchase_agreement (
 	CONSTRAINT fk_flat FOREIGN KEY (flat_id) REFERENCES flat(flat_id)
 );
 
+CREATE TABLE flat_document (
+	document_id serial NOT NULL,
+	doc_type varchar(1024) NOT NULL,
+	doc_name varchar(1024) NOT NULL,
+	doc_content text NOT NULL,
+	url_state_register varchar(1024) NOT NULL,
+	CONSTRAINT flat_document_pkey PRIMARY KEY (document_id)
+);
+
 CREATE TABLE agreement_document (
 	agreement_document_id serial NOT NULL,
-	url_state_register varchar(1024) NOT NULL,
+	flat_document_id int8 NOT NULL,
 	purchase_agreement_id int8 NOT NULL,
 	is_broker_approved bool DEFAULT FALSE,
 	CONSTRAINT agreement_document_pkey PRIMARY KEY (agreement_document_id),
-	CONSTRAINT fk_purchase_agreement FOREIGN KEY (purchase_agreement_id) REFERENCES purchase_agreement(purchase_agreement_id)
-);
+	CONSTRAINT fk_purchase_agreement FOREIGN KEY (purchase_agreement_id) REFERENCES purchase_agreement(purchase_agreement_id),
+	CONSTRAINT fk_flat_document FOREIGN KEY (document_id) REFERENCES flat_document(document_id)
+	);

@@ -1,6 +1,7 @@
 package com.github.alllef.brokerfirmservice.controller;
 
 import com.github.alllef.brokerfirmservice.dto.FlatRequest;
+import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.Flat;
 import com.github.alllef.brokerfirmservice.service.BrokerService;
 import com.github.alllef.brokerfirmservice.service.ClientService;
@@ -32,7 +33,7 @@ public class FlatController {
     }
 
     @GetMapping("/{id}/flat-requests")
-    public List<FlatRequest> getRequests(@PathVariable Long id) {
+    public List<FlatRequestDto> getRequests(@PathVariable Long id) {
         return brokerService.getFlatRequests(id);
     }
 }

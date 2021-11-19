@@ -37,6 +37,7 @@ public class BrokerService {
     private final PurchaseAgreementRepo purchaseAgreementRepo;
     private final BrokerRepo brokerRepo;
     private final ModelMapper mapper;
+    private final RequestPerformer requestPerformer;
 
     /*@Transactional
     public void registerFlat(Flat flat) {
@@ -51,6 +52,7 @@ public class BrokerService {
     }*/
 
     @Transactional
+
     public void createBroker(Broker broker) {
         brokerRepo.save(broker);
     }
@@ -80,16 +82,20 @@ public class BrokerService {
             return new ArrayList<>();
     }
 
-    public List<FlatRequest> getFlatRequests(long flatId) {
+    public List<FlatRequestDto> getFlatRequests(long flatId) {
         Flat flat = flatRepo.findById(flatId).orElseThrow();
+        List<FlatRequest> allFlatRequests = requestPerformer.getAllFlatRequests();
 
-        getAllFlatRequests().stream()
+        List<FlatRequestDto> filteredAllRequests = allFlatRequests.stream()
                 .filter(tmpFlat -> new FloorNumberRange(flat.getFloorNumber())
                         .and(new RoomNumberRange(flat.getRoomsNumber()))
                         .and(new PriceRange(flat.getPrice()))
                         .and(new TotalAreaRange(flat.getTotalArea())).test(tmpFlat))
-                .map(tmpFlat -> new FlatRequestDto())
+                .map(tmpFlat -> new FlatRequestDto(tmpFlat, requestPerformer.getRequestClientById(tmpFlat.getClientId())))
                 .collect(Collectors.toList());
+
+        filteredAllRequests.addAll(requestPerformer.getFilteredFlatRequestsDto(flat));
+        return filteredAllRequests;
     }
 
     public List<PurchaseAgreement> getAgreementsByBrokerId(Long brokerId) {
@@ -112,24 +118,6 @@ public class BrokerService {
         PurchaseAgreement savedAgreement = purchaseAgreementRepo.save(agreement);
         List<FlatDocument> documents = this.getDocumentsByFlat(flatId);
         this.createDocumentAgreementsByFlatList(documents, savedAgreement);
-    }
-
-    @Transactional
-    public List<FlatDocument> getDocumentsByFlat(long flatId) {
-        Flat flat = flatRepo.findById(flatId)
-                .orElseThrow();
-
-        FlatDocument[] response = WebClient.create("http://localhost:8082")
-                .get()
-                .uri("/flat-documents/" + flat.getUrlStateId())
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(FlatDocument[].class)
-                .block();
-
-        return Optional.ofNullable(response)
-                .map(res -> Arrays.stream(res).toList())
-                .orElse(new ArrayList<>());
     }
 
     @Transactional
