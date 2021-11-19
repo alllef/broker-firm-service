@@ -2,23 +2,31 @@ package com.github.alllef.brokerfirmservice.service;
 
 import com.github.alllef.brokerfirmservice.dto.FlatParamDto;
 import com.github.alllef.brokerfirmservice.dto.FlatRequest;
+import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
 import com.github.alllef.brokerfirmservice.entity.FlatDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
+import com.github.alllef.brokerfirmservice.pattern.specification.range.FloorNumberRange;
+import com.github.alllef.brokerfirmservice.pattern.specification.range.PriceRange;
+import com.github.alllef.brokerfirmservice.pattern.specification.range.RoomNumberRange;
+import com.github.alllef.brokerfirmservice.pattern.specification.range.TotalAreaRange;
 import com.github.alllef.brokerfirmservice.repository.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -75,19 +83,13 @@ public class BrokerService {
     public List<FlatRequest> getFlatRequests(long flatId) {
         Flat flat = flatRepo.findById(flatId).orElseThrow();
 
-        FlatRequest[] response = WebClient.builder().baseUrl("http://localhost:8081")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build()
-                .post()
-                .uri("/flat-requests")
-                .bodyValue(mapper.map(flat, FlatParamDto.class))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(FlatRequest[].class)
-                .block();
-
-        return Arrays.stream(response)
-                .toList();
+        getAllFlatRequests().stream()
+                .filter(tmpFlat -> new FloorNumberRange(flat.getFloorNumber())
+                        .and(new RoomNumberRange(flat.getRoomsNumber()))
+                        .and(new PriceRange(flat.getPrice()))
+                        .and(new TotalAreaRange(flat.getTotalArea())).test(tmpFlat))
+                .map(tmpFlat -> new FlatRequestDto())
+                .collect(Collectors.toList());
     }
 
     public List<PurchaseAgreement> getAgreementsByBrokerId(Long brokerId) {
@@ -99,16 +101,23 @@ public class BrokerService {
         clientRepo.save(client);
     }
 
+
     @Transactional
     public void createPurchaseAgreement(Long flatId) {
-        Flat flat = flatRepo.findById(flatId).orElseThrow();
-
         PurchaseAgreement agreement = PurchaseAgreement.builder()
                 .flatId(flatId)
                 .localDate(LocalDate.now())
                 .build();
 
-        PurchaseAgreement result = purchaseAgreementRepo.save(agreement);
+        PurchaseAgreement savedAgreement = purchaseAgreementRepo.save(agreement);
+        List<FlatDocument> documents = this.getDocumentsByFlat(flatId);
+        this.createDocumentAgreementsByFlatList(documents, savedAgreement);
+    }
+
+    @Transactional
+    public List<FlatDocument> getDocumentsByFlat(long flatId) {
+        Flat flat = flatRepo.findById(flatId)
+                .orElseThrow();
 
         FlatDocument[] response = WebClient.create("http://localhost:8082")
                 .get()
@@ -118,13 +127,21 @@ public class BrokerService {
                 .bodyToMono(FlatDocument[].class)
                 .block();
 
-        for (FlatDocument doc : response) {
-            AgreementDocument.builder()
-                    .purchaseAgreementId(result.getPurchaseAgreementId())
-                    .urlStateRegister(flat.getUrlStateId())
-                    .build();
-        }
+        return Optional.ofNullable(response)
+                .map(res -> Arrays.stream(res).toList())
+                .orElse(new ArrayList<>());
+    }
 
+    @Transactional
+    private void createDocumentAgreementsByFlatList(List<FlatDocument> docsList, PurchaseAgreement agreement) {
+        for (FlatDocument doc : docsList) {
+            AgreementDocument agreementDocument = AgreementDocument.builder()
+                    .purchaseAgreementId(agreement.getPurchaseAgreementId())
+                    .urlStateRegister(doc.getUrlStateRegister())
+                    .build();
+
+            agreementDocumentRepo.save(agreementDocument);
+        }
     }
 
     @Transactional
@@ -136,4 +153,15 @@ public class BrokerService {
         agreementDocumentRepo.save(agreementDocument);
     }
 
+    public List<PurchaseAgreement> getPurchaseAgreements(Optional<Boolean> allDocumentsAccepted,
+                                                         Optional<Boolean> isCentralFirmApproved) {
+        if (allDocumentsAccepted.isEmpty() && isCentralFirmApproved.isEmpty())
+            return purchaseAgreementRepo.findAll();
+        else if (allDocumentsAccepted.isPresent()) {
+            if (isCentralFirmApproved.isPresent() && allDocumentsAccepted.get())
+                return purchaseAgreementRepo.findByIsCentralFirmApproved(isCentralFirmApproved.get());
+            else if (isCentralFirmApproved.isEmpty())
+                return purchaseAgreementRepo.
+        }
+    }
 }
