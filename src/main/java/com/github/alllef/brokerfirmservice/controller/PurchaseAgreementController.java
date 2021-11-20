@@ -26,8 +26,8 @@ public class PurchaseAgreementController {
 
     @GetMapping
     public List<PurchaseAgreement> getPurchaseAgreements(Optional<Boolean> isBrokerApproved,
-                                                         Optional<Boolean>  isCentralFirmApproved) {
-        return brokerService.getPurchaseAgreements(isBrokerApproved,isCentralFirmApproved);
+                                                         Optional<Boolean> isCentralFirmApproved) {
+        return brokerService.getPurchaseAgreements(isBrokerApproved, isCentralFirmApproved);
     }
 
     @PostMapping("/flats/{flatId}")
@@ -36,13 +36,14 @@ public class PurchaseAgreementController {
     }
 
     @PutMapping("/{id}")
-    public void updatePurchaseAgreement(@PathVariable Long id) {
+    public void updatePurchaseAgreement(@PathVariable Long id, @RequestParam PurchaseAgreement purchaseAgreement) {
+        brokerService.updatePurchaseAgreement(purchaseAgreement);
     }
 
 
     @DeleteMapping("/{id}")
     public void deletePurchaseAgreement(@PathVariable Long id) {
-
+brokerService.deletePurchaseAgreement(id);
     }
 
 }

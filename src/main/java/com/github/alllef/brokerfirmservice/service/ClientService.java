@@ -8,6 +8,9 @@ import com.github.alllef.brokerfirmservice.repository.FlatRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ClientService {
@@ -19,17 +22,32 @@ public class ClientService {
         clientRepo.save(client);
     }
 
+    @Transactional
     public void createFlat(Flat flat) {
         flatRepo.save(flat);
         flatCreatedEvent.onFlatCreated(flat);
     }
 
+    @Transactional
     public void updateFlat(Flat flat) {
         flatRepo.save(flat);
     }
 
+    @Transactional
     public void deleteFlat(Long flatId) {
         flatRepo.deleteById(flatId);
     }
 
+    public Client getClient(Long clientId) {
+        return clientRepo.findById(clientId)
+                .orElseThrow();
+    }
+
+    public List<Client> getClients(){
+        return clientRepo.findAll();
+    }
+
+    public void deleteClient(Long clientId){
+        clientRepo.deleteById(clientId);
+    }
 }

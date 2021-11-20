@@ -2,6 +2,7 @@ package com.github.alllef.brokerfirmservice.controller;
 
 import com.github.alllef.brokerfirmservice.entity.person.Client;
 import com.github.alllef.brokerfirmservice.repository.ClientRepo;
+import com.github.alllef.brokerfirmservice.service.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,30 +12,30 @@ import java.util.List;
 @RequestMapping("/clients")
 @AllArgsConstructor
 public class ClientController {
-    private final ClientRepo clientRepo;
+    private final ClientService clientService;
 
     @GetMapping
     public List<Client> getAll() {
-        return clientRepo.findAll();
+        return clientService.getClients();
     }
 
     @PostMapping
     public void createClient(@RequestBody Client client) {
-        clientRepo.save(client);
+        clientService.saveClient(client);
     }
 
     @GetMapping("/{id}")
-    void getClient() {
-
+    public Client getClient(@PathVariable Long id) {
+        return clientService.getClient(id);
     }
 
     @PutMapping("/{id}")
     void updateClient(@PathVariable Long id, @RequestBody Client client) {
-        clientRepo.save(client);
+        clientService.saveClient(client);
     }
 
     @DeleteMapping("/{id}")
     void deleteClient(@PathVariable Long id) {
-        clientRepo.deleteById(id);
+        clientService.deleteClient(id);
     }
 }

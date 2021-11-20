@@ -149,6 +149,16 @@ public class BrokerService {
         agreementDocumentRepo.save(agreementDocument);
     }
 
+    @Transactional
+    public void updatePurchaseAgreement(PurchaseAgreement purchaseAgreement){
+        purchaseAgreementRepo.save(purchaseAgreement);
+    }
+
+    @Transactional
+    public void deletePurchaseAgreement(Long purchaseAgreementId){
+        purchaseAgreementRepo.deleteById(purchaseAgreementId);
+    }
+
     public List<PurchaseAgreement> getPurchaseAgreements(Optional<Boolean> allDocumentsAccepted,
                                                          Optional<Boolean> isCentralFirmApproved) {
         if (allDocumentsAccepted.isEmpty() && isCentralFirmApproved.isEmpty())
