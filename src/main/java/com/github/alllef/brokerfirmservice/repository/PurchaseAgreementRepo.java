@@ -13,7 +13,7 @@ public interface PurchaseAgreementRepo extends JpaRepository<PurchaseAgreement, 
 
     List<PurchaseAgreement> findByIsCentralFirmApproved(boolean isCentralFirmApproved);
 
-    @Query(value = "select * from purchase_agreement pa ",
+    /*@Query(value = "select * from purchase_agreement pa ",
             nativeQuery = true)
-    List<PurchaseAgreement> findByIsCentralFirmApproved(boolean isCentralFirmApproved);
+    List<PurchaseAgreement> findByIsCentralFirmApproved(boolean isCentralFirmApproved);*/
 }

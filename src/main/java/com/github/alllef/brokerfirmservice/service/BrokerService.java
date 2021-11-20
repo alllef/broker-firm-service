@@ -1,14 +1,13 @@
 package com.github.alllef.brokerfirmservice.service;
 
-import com.github.alllef.brokerfirmservice.dto.FlatParamDto;
 import com.github.alllef.brokerfirmservice.dto.FlatRequest;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
-import com.github.alllef.brokerfirmservice.entity.FlatDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
+import com.github.alllef.brokerfirmservice.enums.DocType;
 import com.github.alllef.brokerfirmservice.pattern.specification.range.FloorNumberRange;
 import com.github.alllef.brokerfirmservice.pattern.specification.range.PriceRange;
 import com.github.alllef.brokerfirmservice.pattern.specification.range.RoomNumberRange;
@@ -16,16 +15,13 @@ import com.github.alllef.brokerfirmservice.pattern.specification.range.TotalArea
 import com.github.alllef.brokerfirmservice.repository.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,7 +103,6 @@ public class BrokerService {
         clientRepo.save(client);
     }
 
-
     @Transactional
     public void createPurchaseAgreement(Long flatId) {
         PurchaseAgreement agreement = PurchaseAgreement.builder()
@@ -116,16 +111,15 @@ public class BrokerService {
                 .build();
 
         PurchaseAgreement savedAgreement = purchaseAgreementRepo.save(agreement);
-        List<FlatDocument> documents = this.getDocumentsByFlat(flatId);
-        this.createDocumentAgreementsByFlatList(documents, savedAgreement);
+        this.createDocumentAgreementsByFlatList( savedAgreement);
     }
 
     @Transactional
-    private void createDocumentAgreementsByFlatList(List<FlatDocument> docsList, PurchaseAgreement agreement) {
-        for (FlatDocument doc : docsList) {
+    private void createDocumentAgreementsByFlatList(PurchaseAgreement agreement) {
+        for (DocType doc : DocType.values()) {
             AgreementDocument agreementDocument = AgreementDocument.builder()
                     .purchaseAgreementId(agreement.getPurchaseAgreementId())
-                    .urlStateRegister(doc.getUrlStateRegister())
+                    .docType(doc)
                     .build();
 
             agreementDocumentRepo.save(agreementDocument);

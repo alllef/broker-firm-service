@@ -1,11 +1,9 @@
 package com.github.alllef.brokerfirmservice.entity;
 
+import com.github.alllef.brokerfirmservice.enums.DocType;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Builder(toBuilder = true)
@@ -19,6 +17,7 @@ public class AgreementDocument {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long agreementDocumentId;
     private Long purchaseAgreementId;
+    @Enumerated(EnumType.STRING)
+    private DocType docType;
     private boolean isBrokerApproved;
-    private String urlStateRegister;
 }

@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS flat_photo CASCADE;
 DROP TABLE IF EXISTS purchase_agreement CASCADE;
 DROP TABLE IF EXISTS agreement_document CASCADE;
 DROP TABLE IF EXISTS flat CASCADE;
+DROP TABLE IF EXISTS flat_request CASCADE;
 
 CREATE TABLE broker (
 	broker_id serial NOT NULL,
@@ -78,7 +79,7 @@ CREATE TABLE flat_document (
 
 CREATE TABLE agreement_document (
 	agreement_document_id serial NOT NULL,
-	flat_document_id int8 NOT NULL,
+	document_id int8 NOT NULL,
 	purchase_agreement_id int8 NOT NULL,
 	is_broker_approved bool DEFAULT FALSE,
 	CONSTRAINT agreement_document_pkey PRIMARY KEY (agreement_document_id),
