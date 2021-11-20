@@ -13,7 +13,6 @@ DROP TABLE IF EXISTS flat_photo CASCADE;
 DROP TABLE IF EXISTS purchase_agreement CASCADE;
 DROP TABLE IF EXISTS agreement_document CASCADE;
 DROP TABLE IF EXISTS flat CASCADE;
-DROP TABLE IF EXISTS flat_request CASCADE;
 
 CREATE TABLE broker (
 	broker_id serial NOT NULL,
@@ -68,21 +67,11 @@ CREATE TABLE purchase_agreement (
 	CONSTRAINT fk_flat FOREIGN KEY (flat_id) REFERENCES flat(flat_id)
 );
 
-CREATE TABLE flat_document (
-	document_id serial NOT NULL,
-	doc_type varchar(1024) NOT NULL,
-	doc_name varchar(1024) NOT NULL,
-	doc_content text NOT NULL,
-	url_state_register varchar(1024) NOT NULL,
-	CONSTRAINT flat_document_pkey PRIMARY KEY (document_id)
-);
 
 CREATE TABLE agreement_document (
 	agreement_document_id serial NOT NULL,
-	document_id int8 NOT NULL,
+	doc_type varchar(1024) NOT NULL,
 	purchase_agreement_id int8 NOT NULL,
 	is_broker_approved bool DEFAULT FALSE,
 	CONSTRAINT agreement_document_pkey PRIMARY KEY (agreement_document_id),
-	CONSTRAINT fk_purchase_agreement FOREIGN KEY (purchase_agreement_id) REFERENCES purchase_agreement(purchase_agreement_id),
-	CONSTRAINT fk_flat_document FOREIGN KEY (document_id) REFERENCES flat_document(document_id)
-	);
+	CONSTRAINT fk_purchase_agreement FOREIGN KEY (purchase_agreement_id) REFERENCES purchase_agreement(purchase_agreement_id));

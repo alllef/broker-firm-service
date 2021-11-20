@@ -157,7 +157,9 @@ public class BrokerService {
             if (isCentralFirmApproved.isPresent() && allDocumentsAccepted.get())
                 return purchaseAgreementRepo.findByIsCentralFirmApproved(isCentralFirmApproved.get());
             else if (isCentralFirmApproved.isEmpty())
-                return purchaseAgreementRepo.
+                return purchaseAgreementRepo.findByIsBrokerApproved(allDocumentsAccepted.get());
         }
+
+        return new ArrayList<>();
     }
 }

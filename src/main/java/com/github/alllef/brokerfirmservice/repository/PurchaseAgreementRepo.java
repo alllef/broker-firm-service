@@ -13,7 +13,9 @@ public interface PurchaseAgreementRepo extends JpaRepository<PurchaseAgreement, 
 
     List<PurchaseAgreement> findByIsCentralFirmApproved(boolean isCentralFirmApproved);
 
-    /*@Query(value = "select * from purchase_agreement pa ",
+    @Query(value = """
+            select * from purchase_agreement pa join agreement_document ad using(purchase_agreement_id)
+            where ad.is_broker_approved =?""",
             nativeQuery = true)
-    List<PurchaseAgreement> findByIsCentralFirmApproved(boolean isCentralFirmApproved);*/
+    List<PurchaseAgreement> findByIsBrokerApproved(Boolean isBrokerApproved);
 }

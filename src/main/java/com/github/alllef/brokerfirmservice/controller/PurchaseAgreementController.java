@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -24,9 +25,9 @@ public class PurchaseAgreementController {
     }
 
     @GetMapping
-    public List<PurchaseAgreement> getPurchaseAgreements(@RequestParam(required = false) boolean allDocumentsAccepted,
-                                                         @RequestParam(required = false) boolean isCentralFirmApproved) {
-        return new ArrayList<>();
+    public List<PurchaseAgreement> getPurchaseAgreements(Optional<Boolean> isBrokerApproved,
+                                                         Optional<Boolean>  isCentralFirmApproved) {
+        return brokerService.getPurchaseAgreements(isBrokerApproved,isCentralFirmApproved);
     }
 
     @PostMapping("/flats/{flatId}")
