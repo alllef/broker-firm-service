@@ -1,13 +1,16 @@
 package com.github.alllef.brokerfirmservice.service;
 
+import com.github.alllef.brokerfirmservice.dto.DocumentDto;
 import com.github.alllef.brokerfirmservice.dto.FlatRequest;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
+import com.github.alllef.brokerfirmservice.entity.FlatDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
 import com.github.alllef.brokerfirmservice.enums.DocType;
+import com.github.alllef.brokerfirmservice.pattern.facade.FormattingFacade;
 import com.github.alllef.brokerfirmservice.pattern.specification.range.FloorNumberRange;
 import com.github.alllef.brokerfirmservice.pattern.specification.range.PriceRange;
 import com.github.alllef.brokerfirmservice.pattern.specification.range.RoomNumberRange;
@@ -34,6 +37,7 @@ public class BrokerService {
     private final BrokerRepo brokerRepo;
     private final ModelMapper mapper;
     private final RequestPerformer requestPerformer;
+    private final FormattingFacade formattingFacade;
 
     /*@Transactional
     public void registerFlat(Flat flat) {
@@ -111,7 +115,7 @@ public class BrokerService {
                 .build();
 
         PurchaseAgreement savedAgreement = purchaseAgreementRepo.save(agreement);
-        this.createDocumentAgreementsByFlatList( savedAgreement);
+        this.createDocumentAgreementsByFlatList(savedAgreement);
     }
 
     @Transactional
@@ -124,6 +128,16 @@ public class BrokerService {
 
             agreementDocumentRepo.save(agreementDocument);
         }
+    }
+
+    public List<DocumentDto> getDocumentsByFlat(Long flatId) {
+        List<AgreementDocument> documents = agreementDocumentRepo.getDocumentsByFlatId(flatId);
+        return documents.stream()
+                .map(document -> DocumentDto.builder()
+                        .agreementDocument(document)
+                        .formattedDocument(formattingFacade.getFormattedDoc(document.getDocType()))
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Transactional

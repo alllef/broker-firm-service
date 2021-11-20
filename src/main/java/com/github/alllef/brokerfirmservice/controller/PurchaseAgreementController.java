@@ -1,5 +1,6 @@
 package com.github.alllef.brokerfirmservice.controller;
 
+import com.github.alllef.brokerfirmservice.dto.DocumentDto;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.service.BrokerService;
@@ -17,10 +18,10 @@ public class PurchaseAgreementController {
     private final BrokerService brokerService;
     private final CentralDepartment centralDepartment;
 
-    /*@GetMapping("/{flatId}/documents")
-    public List<AgreementDocument> getFormattedFlatDocuments(@PathVariable Long flatId) {
+    @GetMapping("/{flatId}/documents")
+    public List<DocumentDto> getFormattedFlatDocuments(@PathVariable Long flatId) {
         return brokerService.getDocumentsByFlat(flatId);
-    }*/
+    }
 
     @GetMapping
     public List<PurchaseAgreement> getPurchaseAgreements(@RequestParam(required = false) boolean allDocumentsAccepted,
