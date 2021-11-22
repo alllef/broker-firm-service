@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +23,8 @@ public class CentralDepartment {
     private final FlatRepo flatRepo;
 
     private Broker getLeastBusyBroker() {
-        Optional<BrokerFlatView> optionalBrokerFlatView = brokerRepo.getGroupedBrokers()
-                .stream()
+        List<BrokerFlatView> groupedBrokers = brokerRepo.getGroupedBrokers();
+        Optional<BrokerFlatView> optionalBrokerFlatView = groupedBrokers.stream()
                 .min(Comparator.comparingInt(BrokerFlatView::getFlatNum));
 
         Long id = optionalBrokerFlatView.orElseThrow()
@@ -45,7 +46,7 @@ public class CentralDepartment {
 
     public void approvePurchaseAgreement(PurchaseAgreement purchaseAgreement) {
         PurchaseAgreement approvedPurchaseAgreement = purchaseAgreement.toBuilder()
-                .isCentralFirmApproved(true)
+                .centralFirmApproved(true)
                 .build();
 
         purchaseAgreementRepo.save(approvedPurchaseAgreement);

@@ -1,5 +1,6 @@
 package com.github.alllef.brokerfirmservice.repository;
 
+import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,11 +12,11 @@ public interface PurchaseAgreementRepo extends JpaRepository<PurchaseAgreement, 
             nativeQuery = true)
     List<PurchaseAgreement> findByBrokerId(Long brokerId);
 
-    List<PurchaseAgreement> findByIsCentralFirmApproved(boolean isCentralFirmApproved);
+    List<PurchaseAgreement> findByCentralFirmApproved(boolean isCentralFirmApproved);
 
     @Query(value = """
             select * from purchase_agreement pa join agreement_document ad using(purchase_agreement_id)
             where ad.is_broker_approved =?""",
             nativeQuery = true)
-    List<PurchaseAgreement> findByIsBrokerApproved(Boolean isBrokerApproved);
+    List<AgreementDocument> getAgreementDocuments(Boolean isBrokerApproved);
 }

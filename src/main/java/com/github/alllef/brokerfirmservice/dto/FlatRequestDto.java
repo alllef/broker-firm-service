@@ -2,10 +2,15 @@ package com.github.alllef.brokerfirmservice.dto;
 
 
 import com.github.alllef.brokerfirmservice.entity.person.Client;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@Getter
+@EqualsAndHashCode
+@ToString
 public class FlatRequestDto {
-    private final FlatRequest flatRequest;
-    private final Client client;
+    private FlatRequest flatRequest;
+    private Client client;
 }

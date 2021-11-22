@@ -60,7 +60,7 @@ CREATE TABLE flat_photo (
 
 CREATE TABLE purchase_agreement (
 	purchase_agreement_id serial NOT NULL,
-	is_central_firm_approved bool DEFAULT FALSE,
+	central_firm_approved bool DEFAULT FALSE,
 	flat_id int8 NOT NULL,
 	date_of_issue date NOT NULL,
 	CONSTRAINT purchase_agreement_pkey PRIMARY KEY (purchase_agreement_id),

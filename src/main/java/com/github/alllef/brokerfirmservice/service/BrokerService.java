@@ -164,7 +164,7 @@ public class BrokerService {
             return getPurchaseAgreementsWhereAllDocumentsAccepted();
 
         else if (allDocumentsAccepted.isPresent() && allDocumentsAccepted.get() && isCentralFirmApproved.isPresent())
-            return purchaseAgreementRepo.findByIsCentralFirmApproved(isCentralFirmApproved.get());
+            return purchaseAgreementRepo.findByCentralFirmApproved(isCentralFirmApproved.get());
 
         return new ArrayList<>();
     }

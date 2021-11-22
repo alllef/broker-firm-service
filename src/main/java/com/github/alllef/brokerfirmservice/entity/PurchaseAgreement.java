@@ -20,7 +20,7 @@ public class PurchaseAgreement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long purchaseAgreementId;
-    private boolean isCentralFirmApproved;
+    private boolean centralFirmApproved;
     private Long flatId;
     private LocalDate dateOfIssue;
 

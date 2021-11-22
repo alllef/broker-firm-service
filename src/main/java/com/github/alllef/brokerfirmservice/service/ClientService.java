@@ -24,7 +24,6 @@ public class ClientService {
 
     @Transactional
     public void createFlat(Flat flat) {
-        flatRepo.save(flat);
         flatCreatedEvent.onFlatCreated(flat);
     }
 
@@ -43,11 +42,11 @@ public class ClientService {
                 .orElseThrow();
     }
 
-    public List<Client> getClients(){
+    public List<Client> getClients() {
         return clientRepo.findAll();
     }
 
-    public void deleteClient(Long clientId){
+    public void deleteClient(Long clientId) {
         clientRepo.deleteById(clientId);
     }
 }

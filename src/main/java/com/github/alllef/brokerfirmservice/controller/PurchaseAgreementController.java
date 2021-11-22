@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/purchaseAgreements")
-public class    PurchaseAgreementController {
+public class PurchaseAgreementController {
     private final BrokerService brokerService;
     private final CentralDepartment centralDepartment;
 
@@ -25,8 +25,8 @@ public class    PurchaseAgreementController {
     }
 
     @GetMapping
-    public List<PurchaseAgreement> getPurchaseAgreements(Optional<Boolean> isBrokerApproved,
-                                                         Optional<Boolean> isCentralFirmApproved) {
+    public List<PurchaseAgreement> getPurchaseAgreements(@RequestParam Optional<Boolean> isBrokerApproved,
+                                                         @RequestParam Optional<Boolean> isCentralFirmApproved) {
         return brokerService.getPurchaseAgreements(isBrokerApproved, isCentralFirmApproved);
     }
 
@@ -36,7 +36,7 @@ public class    PurchaseAgreementController {
     }
 
     @PutMapping("/{id}")
-    public void updatePurchaseAgreement(@PathVariable Long id, @RequestParam PurchaseAgreement purchaseAgreement) {
+    public void updatePurchaseAgreement(@PathVariable Long id, @RequestBody PurchaseAgreement purchaseAgreement) {
         brokerService.updatePurchaseAgreement(purchaseAgreement);
     }
 
