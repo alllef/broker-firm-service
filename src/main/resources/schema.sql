@@ -37,7 +37,6 @@ CREATE TABLE flat (
 	flat_id serial NOT NULL,
 	client_id int8 NOT NULL,
 	broker_id int8 NOT NULL,
-	buyer_id int8,
 	is_broker_accepted boolean DEFAULT FALSE,
 	floor_number int4 NOT NULL,
 	total_area int4 NOT NULL,
@@ -45,8 +44,8 @@ CREATE TABLE flat (
 	rooms_number int4 NOT NULL,
 	description text NOT NULL,
 	CONSTRAINT flat_pkey PRIMARY KEY (flat_id),
-	CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES client(client_id),
-	CONSTRAINT fk_broker FOREIGN KEY (broker_id) REFERENCES broker(broker_id)
+	CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE CASCADE,
+	CONSTRAINT fk_broker FOREIGN KEY (broker_id) REFERENCES broker(broker_id) ON DELETE CASCADE
 );
 
 CREATE TABLE flat_photo (
@@ -54,9 +53,8 @@ CREATE TABLE flat_photo (
 	flat_id int8 NOT NULL,
 	photo_url text NOT NULL,
 	CONSTRAINT flat_photo_pkey PRIMARY KEY (flat_photo_id),
-	CONSTRAINT fk_flat FOREIGN KEY (flat_id) REFERENCES flat(flat_id)
+	CONSTRAINT fk_flat FOREIGN KEY (flat_id) REFERENCES flat(flat_id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE purchase_agreement (
 	purchase_agreement_id serial NOT NULL,
@@ -64,7 +62,7 @@ CREATE TABLE purchase_agreement (
 	flat_id int8 NOT NULL,
 	date_of_issue date NOT NULL,
 	CONSTRAINT purchase_agreement_pkey PRIMARY KEY (purchase_agreement_id),
-	CONSTRAINT fk_flat FOREIGN KEY (flat_id) REFERENCES flat(flat_id)
+	CONSTRAINT fk_flat FOREIGN KEY (flat_id) REFERENCES flat(flat_id) ON DELETE CASCADE
 );
 
 
@@ -72,6 +70,7 @@ CREATE TABLE agreement_document (
 	agreement_document_id serial NOT NULL,
 	doc_type varchar(1024) NOT NULL,
 	purchase_agreement_id int8 NOT NULL,
-	is_broker_approved bool DEFAULT FALSE,
+	broker_approved bool DEFAULT FALSE,
 	CONSTRAINT agreement_document_pkey PRIMARY KEY (agreement_document_id),
-	CONSTRAINT fk_purchase_agreement FOREIGN KEY (purchase_agreement_id) REFERENCES purchase_agreement(purchase_agreement_id));
+	CONSTRAINT fk_purchase_agreement FOREIGN KEY (purchase_agreement_id) REFERENCES purchase_agreement(purchase_agreement_id) ON DELETE CASCADE
+	);

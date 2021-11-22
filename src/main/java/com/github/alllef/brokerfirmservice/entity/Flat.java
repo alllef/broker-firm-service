@@ -19,7 +19,6 @@ public class Flat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long flatId;
     private Long clientId;
-    private Long buyerId;
     private Long brokerId;
     private boolean isBrokerAccepted;
     private int floorNumber;

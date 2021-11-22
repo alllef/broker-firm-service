@@ -19,5 +19,5 @@ public class AgreementDocument {
     private Long purchaseAgreementId;
     @Enumerated(EnumType.STRING)
     private DocType docType;
-    private boolean isBrokerApproved;
+    private boolean brokerApproved;
 }

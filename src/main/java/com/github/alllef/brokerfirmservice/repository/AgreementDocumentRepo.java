@@ -13,7 +13,7 @@ public interface AgreementDocumentRepo extends JpaRepository<AgreementDocument, 
     List<AgreementDocument> findByPurchaseAgreementId(Long purchaseAgreementId);
 
     @Query(value = """
-            select ad.agreement_document_id ,ad.doc_type,ad.purchase_agreement_id ,ad .is_broker_approved from agreement_document ad
+            select ad.agreement_document_id ,ad.doc_type,ad.purchase_agreement_id ,ad .broker_approved from agreement_document ad
             join purchase_agreement pa using(purchase_agreement_id) where flat_id = ?""",
             nativeQuery = true)
     List<AgreementDocument> getDocumentsByFlatId(Long flatId);

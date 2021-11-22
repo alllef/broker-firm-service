@@ -48,8 +48,15 @@ public class BrokerService {
         }
     }*/
 
-    @Transactional
+    public List<Broker> findAll() {
+        return brokerRepo.findAll();
+    }
 
+    public List<Flat> findAllFlats() {
+        return flatRepo.findAll();
+    }
+
+    @Transactional
     public void createBroker(Broker broker) {
         brokerRepo.save(broker);
     }
@@ -74,7 +81,7 @@ public class BrokerService {
         else if (isBrokerApproved.isPresent() && isAgreementClosed.isEmpty())
             return flatRepo.findByBrokerIdAndIsBrokerAccepted(brokerId, isBrokerApproved.get());
         else if (isBrokerApproved.isPresent() && isBrokerApproved.get() && isAgreementClosed.isPresent())
-            return flatRepo.getFlatsByBrokerIdAnIsCentralFirmApproved(brokerId, isAgreementClosed.get());
+            return flatRepo.getFlatsByBrokerIdAnCentralFirmApproved(brokerId, isAgreementClosed.get());
 
         return new ArrayList<>();
     }
@@ -140,7 +147,7 @@ public class BrokerService {
     @Transactional
     public void approveDocument(AgreementDocument agreementDocument) {
         agreementDocument.toBuilder()
-                .isBrokerApproved(true)
+                .brokerApproved(true)
                 .build();
 
         agreementDocumentRepo.save(agreementDocument);
@@ -149,6 +156,11 @@ public class BrokerService {
     @Transactional
     public void updatePurchaseAgreement(PurchaseAgreement purchaseAgreement) {
         purchaseAgreementRepo.save(purchaseAgreement);
+    }
+
+    @Transactional
+    public void updateDocument(AgreementDocument agreementDocument) {
+        agreementDocumentRepo.save(agreementDocument);
     }
 
     @Transactional

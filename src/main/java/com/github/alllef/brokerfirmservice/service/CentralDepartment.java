@@ -1,6 +1,6 @@
 package com.github.alllef.brokerfirmservice.service;
 
-import com.github.alllef.brokerfirmservice.dto.BrokerFlatView;
+import com.github.alllef.brokerfirmservice.dto.BrokerFlatDto;
 import com.github.alllef.brokerfirmservice.entity.Flat;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +24,11 @@ public class CentralDepartment {
     private final FlatRepo flatRepo;
 
     private Broker getLeastBusyBroker() {
-        List<BrokerFlatView> groupedBrokers = brokerRepo.getGroupedBrokers();
-        Optional<BrokerFlatView> optionalBrokerFlatView = groupedBrokers.stream()
-                .min(Comparator.comparingInt(BrokerFlatView::getFlatNum));
+        List<Object[]> groupedBrokers = brokerRepo.getGroupedBrokers();
+
+        Optional<BrokerFlatDto> optionalBrokerFlatView = groupedBrokers.stream()
+                .map(objects -> new BrokerFlatDto(((BigInteger) objects[0]).longValue(), ((BigInteger) objects[1]).intValue()))
+                .min(Comparator.comparingInt(BrokerFlatDto::getFlatNum));
 
         Long id = optionalBrokerFlatView.orElseThrow()
                 .getBrokerId();

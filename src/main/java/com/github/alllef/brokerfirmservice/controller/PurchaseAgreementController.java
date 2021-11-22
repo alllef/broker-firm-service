@@ -24,6 +24,11 @@ public class PurchaseAgreementController {
         return brokerService.getDocumentsByFlat(flatId);
     }
 
+    @PutMapping("/documents/{id}")
+    public void updateDocument(@PathVariable Long id, @RequestBody AgreementDocument agreementDocument) {
+        brokerService.updateDocument(agreementDocument);
+    }
+
     @GetMapping
     public List<PurchaseAgreement> getPurchaseAgreements(@RequestParam Optional<Boolean> isBrokerApproved,
                                                          @RequestParam Optional<Boolean> isCentralFirmApproved) {
@@ -36,7 +41,7 @@ public class PurchaseAgreementController {
     }
 
     @PutMapping("/{id}")
-    public void updatePurchaseAgreement(@PathVariable Long id, @RequestBody PurchaseAgreement purchaseAgreement) {
+    public void updateDocument(@PathVariable Long id, @RequestBody PurchaseAgreement purchaseAgreement) {
         brokerService.updatePurchaseAgreement(purchaseAgreement);
     }
 

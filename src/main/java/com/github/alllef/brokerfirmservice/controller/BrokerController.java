@@ -16,6 +16,11 @@ import java.util.Optional;
 public class BrokerController {
     private final BrokerService brokerService;
 
+    @GetMapping
+    public List<Broker> getAll(){
+        return brokerService.findAll();
+    }
+
     @GetMapping("/{id}/purchaseAgreements")
     List<PurchaseAgreement> getPurchaseAgreements(@PathVariable Long id) {
         return brokerService.getAgreementsByBrokerId(id);

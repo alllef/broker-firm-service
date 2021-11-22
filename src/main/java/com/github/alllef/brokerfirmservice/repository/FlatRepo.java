@@ -14,8 +14,7 @@ public interface FlatRepo extends JpaRepository<Flat, Long> {
 
     List<Flat> findByBrokerIdAndIsBrokerAccepted(long brokerId, boolean isBrokerAccepted);
 
-    @Query(value = "select * from flat f  join purchase_agreement pa using(flat_id) where broker_id = ? AND is_central_firm_approved = ?",
+    @Query(value = "select * from flat f  join purchase_agreement pa using(flat_id) where broker_id = ? AND central_firm_approved = ?",
             nativeQuery = true)
-    List<Flat> getFlatsByBrokerIdAnIsCentralFirmApproved(Long brokerId, boolean isCentralFirmApproved);
-
+    List<Flat> getFlatsByBrokerIdAnCentralFirmApproved(Long brokerId, boolean isCentralFirmApproved);
 }
