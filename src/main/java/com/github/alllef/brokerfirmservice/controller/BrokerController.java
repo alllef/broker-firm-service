@@ -32,7 +32,7 @@ public class BrokerController {
     }
 
     @PutMapping("/{id}")
-    public void updateBroker(@PathVariable Long id, @RequestParam Broker broker) {
+    public void updateBroker(@PathVariable Long id, @RequestBody Broker broker) {
         brokerService.updateBroker(broker);
     }
 
@@ -42,8 +42,8 @@ public class BrokerController {
     }
 
     @GetMapping("/{id}/flats")
-    List<Flat> getFlats(@PathVariable Long id, @RequestParam(required = false) Optional<Boolean> isBrokerApproved,
-                        @RequestParam(required = false) Optional<Boolean> isAgreementClosed) {
+    List<Flat> getFlats(@PathVariable Long id, @RequestParam Optional<Boolean> isBrokerApproved,
+                        @RequestParam Optional<Boolean> isAgreementClosed) {
         return brokerService.getFlats(id, isBrokerApproved, isAgreementClosed);
     }
 

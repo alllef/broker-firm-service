@@ -22,6 +22,6 @@ public class PurchaseAgreement {
     private Long purchaseAgreementId;
     private boolean isCentralFirmApproved;
     private Long flatId;
-    private LocalDate localDate;
+    private LocalDate dateOfIssue;
 
 }

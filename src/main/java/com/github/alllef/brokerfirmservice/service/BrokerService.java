@@ -5,7 +5,6 @@ import com.github.alllef.brokerfirmservice.dto.FlatRequest;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
-import com.github.alllef.brokerfirmservice.entity.FlatDocument;
 import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
@@ -22,9 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,12 +71,12 @@ public class BrokerService {
     public List<Flat> getFlats(long brokerId, Optional<Boolean> isBrokerApproved, Optional<Boolean> isAgreementClosed) {
         if (isBrokerApproved.isEmpty() && isAgreementClosed.isEmpty())
             return flatRepo.findByBrokerId(brokerId);
-        else if (isAgreementClosed.isPresent() && (isBrokerApproved.isEmpty() || isBrokerApproved.get()))
-            return flatRepo.getFlatsByBrokerIdAnIsCentralFirmApproved(brokerId, isAgreementClosed.get());
-        else if (isBrokerApproved.isPresent())
+        else if (isBrokerApproved.isPresent() && isAgreementClosed.isEmpty())
             return flatRepo.findByBrokerIdAndIsBrokerAccepted(brokerId, isBrokerApproved.get());
-        else
-            return new ArrayList<>();
+        else if (isBrokerApproved.isPresent() && isBrokerApproved.get() && isAgreementClosed.isPresent())
+            return flatRepo.getFlatsByBrokerIdAnIsCentralFirmApproved(brokerId, isAgreementClosed.get());
+
+        return new ArrayList<>();
     }
 
     public List<FlatRequestDto> getFlatRequests(long flatId) {
@@ -111,7 +108,7 @@ public class BrokerService {
     public void createPurchaseAgreement(Long flatId) {
         PurchaseAgreement agreement = PurchaseAgreement.builder()
                 .flatId(flatId)
-                .localDate(LocalDate.now())
+                .dateOfIssue(LocalDate.now())
                 .build();
 
         PurchaseAgreement savedAgreement = purchaseAgreementRepo.save(agreement);
@@ -119,7 +116,7 @@ public class BrokerService {
     }
 
     @Transactional
-    private void createDocumentAgreementsByFlatList(PurchaseAgreement agreement) {
+    public void createDocumentAgreementsByFlatList(PurchaseAgreement agreement) {
         for (DocType doc : DocType.values()) {
             AgreementDocument agreementDocument = AgreementDocument.builder()
                     .purchaseAgreementId(agreement.getPurchaseAgreementId())
@@ -150,12 +147,12 @@ public class BrokerService {
     }
 
     @Transactional
-    public void updatePurchaseAgreement(PurchaseAgreement purchaseAgreement){
+    public void updatePurchaseAgreement(PurchaseAgreement purchaseAgreement) {
         purchaseAgreementRepo.save(purchaseAgreement);
     }
 
     @Transactional
-    public void deletePurchaseAgreement(Long purchaseAgreementId){
+    public void deletePurchaseAgreement(Long purchaseAgreementId) {
         purchaseAgreementRepo.deleteById(purchaseAgreementId);
     }
 
@@ -163,13 +160,27 @@ public class BrokerService {
                                                          Optional<Boolean> isCentralFirmApproved) {
         if (allDocumentsAccepted.isEmpty() && isCentralFirmApproved.isEmpty())
             return purchaseAgreementRepo.findAll();
-        else if (allDocumentsAccepted.isPresent()) {
-            if (isCentralFirmApproved.isPresent() && allDocumentsAccepted.get())
-                return purchaseAgreementRepo.findByIsCentralFirmApproved(isCentralFirmApproved.get());
-            else if (isCentralFirmApproved.isEmpty())
-                return purchaseAgreementRepo.findByIsBrokerApproved(allDocumentsAccepted.get());
-        }
+        else if (allDocumentsAccepted.isPresent() && isCentralFirmApproved.isEmpty())
+            return getPurchaseAgreementsWhereAllDocumentsAccepted();
+
+        else if (allDocumentsAccepted.isPresent() && allDocumentsAccepted.get() && isCentralFirmApproved.isPresent())
+            return purchaseAgreementRepo.findByIsCentralFirmApproved(isCentralFirmApproved.get());
 
         return new ArrayList<>();
+    }
+
+    private List<PurchaseAgreement> getPurchaseAgreementsWhereAllDocumentsAccepted() {
+        List<AgreementDocument> documents = purchaseAgreementRepo.getAgreementDocuments(true);
+        Set<Long> ids = new HashSet<>();
+
+        for (AgreementDocument document : documents) {
+            long purchaseAgreementId = document.getPurchaseAgreementId();
+            ids.add(purchaseAgreementId);
+
+            if (!document.isBrokerApproved())
+                ids.remove(purchaseAgreementId);
+        }
+
+        return purchaseAgreementRepo.findAllById(ids);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/purchaseAgreements")
-public class PurchaseAgreementController {
+public class    PurchaseAgreementController {
     private final BrokerService brokerService;
     private final CentralDepartment centralDepartment;
 
@@ -40,10 +40,8 @@ public class PurchaseAgreementController {
         brokerService.updatePurchaseAgreement(purchaseAgreement);
     }
 
-
     @DeleteMapping("/{id}")
     public void deletePurchaseAgreement(@PathVariable Long id) {
-brokerService.deletePurchaseAgreement(id);
+        brokerService.deletePurchaseAgreement(id);
     }
-
 }
