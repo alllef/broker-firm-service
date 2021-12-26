@@ -10,6 +10,6 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class FlatRequestDto {
-    private FlatRequest flatRequest;
+    private FlatRequestTmp flatRequestTmp;
     private Client client;
 }

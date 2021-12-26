@@ -1,6 +1,6 @@
 package com.github.alllef.brokerfirmservice.service;
 
-import com.github.alllef.brokerfirmservice.dto.FlatRequest;
+import com.github.alllef.brokerfirmservice.dto.FlatRequestTmp;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.Flat;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
@@ -40,15 +40,15 @@ public class RequestPerformer {
                 .orElse(new ArrayList<>());
     }
 
-    public List<FlatRequest> getAllFlatRequests() {
-        FlatRequest[] response = WebClient.builder().baseUrl("http://localhost:8082")
+    public List<FlatRequestTmp> getAllFlatRequests() {
+        FlatRequestTmp[] response = WebClient.builder().baseUrl("http://localhost:8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build()
                 .get()
                 .uri("/flat-requests")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(FlatRequest[].class)
+                .bodyToMono(FlatRequestTmp[].class)
                 .block();
 
         return Optional.ofNullable(response)

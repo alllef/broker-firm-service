@@ -1,9 +1,7 @@
 package com.github.alllef.brokerfirmservice.controller;
 
-import com.github.alllef.brokerfirmservice.dto.FlatRequest;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.Flat;
-import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.service.BrokerService;
 import com.github.alllef.brokerfirmservice.service.ClientService;
 import lombok.AllArgsConstructor;

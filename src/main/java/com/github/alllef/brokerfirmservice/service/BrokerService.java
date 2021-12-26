@@ -1,7 +1,7 @@
 package com.github.alllef.brokerfirmservice.service;
 
 import com.github.alllef.brokerfirmservice.dto.DocumentDto;
-import com.github.alllef.brokerfirmservice.dto.FlatRequest;
+import com.github.alllef.brokerfirmservice.dto.FlatRequestTmp;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
 import com.github.alllef.brokerfirmservice.entity.Flat;
@@ -88,9 +88,9 @@ public class BrokerService {
 
     public List<FlatRequestDto> getFlatRequests(long flatId) {
         Flat flat = flatRepo.findById(flatId).orElseThrow();
-        List<FlatRequest> allFlatRequests = requestPerformer.getAllFlatRequests();
+        List<FlatRequestTmp> allFlatRequestTmps = requestPerformer.getAllFlatRequests();
 
-        List<FlatRequestDto> filteredAllRequests = allFlatRequests.stream()
+        List<FlatRequestDto> filteredAllRequests = allFlatRequestTmps.stream()
                 .filter(tmpFlat -> new FloorNumberRange(flat.getFloorNumber())
                         .and(new RoomNumberRange(flat.getRoomsNumber()))
                         .and(new PriceRange(flat.getPrice()))

@@ -1,7 +1,7 @@
 package com.github.alllef.brokerfirmservice.pattern.specification.range;
 
 
-import com.github.alllef.brokerfirmservice.dto.FlatRequest;
+import com.github.alllef.brokerfirmservice.dto.FlatRequestTmp;
 
 public class TotalAreaRange extends FlatIntRange{
     public TotalAreaRange(int actualRange) {
@@ -9,7 +9,7 @@ public class TotalAreaRange extends FlatIntRange{
     }
 
     @Override
-    public boolean test(FlatRequest flatRequest) {
-        return new RangeSelector<Integer>(flatRequest.getTotalAreaLowerBound(), flatRequest.getTotalAreaUpperBound()).test(actualRange);
+    public boolean test(FlatRequestTmp flatRequestTmp) {
+        return new RangeSelector<Integer>(flatRequestTmp.getTotalAreaLowerBound(), flatRequestTmp.getTotalAreaUpperBound()).test(actualRange);
     }
 }

@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class FlatRequest {
+public class FlatRequestTmp {
     private Long flatId;
     private Long clientId;
     private int floorNumberLowerBound;
@@ -19,4 +19,5 @@ public class FlatRequest {
     private int priceUpperBound;
     private int roomsNumberLowerBound;
     private int roomsNumberUpperBound;
+    private String description;
 }

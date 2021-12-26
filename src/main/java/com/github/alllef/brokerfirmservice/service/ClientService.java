@@ -11,42 +11,42 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
-@AllArgsConstructor
-public class ClientService {
-    private final ClientRepo clientRepo;
-    private final FlatRepo flatRepo;
-    private final FlatCreatedEvent flatCreatedEvent;
+    @Service
+    @AllArgsConstructor
+    public class ClientService {
+        private final ClientRepo clientRepo;
+        private final FlatRepo flatRepo;
+        private final FlatCreatedEvent flatCreatedEvent;
 
-    public void saveClient(Client client) {
-        clientRepo.save(client);
-    }
+        public void saveClient(Client client) {
+            clientRepo.save(client);
+        }
 
-    @Transactional
-    public void createFlat(Flat flat) {
-        flatCreatedEvent.onFlatCreated(flat);
-    }
+        @Transactional
+        public void createFlat(Flat flat) {
+            flatCreatedEvent.onFlatCreated(flat);
+        }
 
-    @Transactional
-    public void updateFlat(Flat flat) {
-        flatRepo.save(flat);
-    }
+        @Transactional
+        public void updateFlat(Flat flat) {
+            flatRepo.save(flat);
+        }
 
-    @Transactional
-    public void deleteFlat(Long flatId) {
-        flatRepo.deleteById(flatId);
-    }
+        @Transactional
+        public void deleteFlat(Long flatId) {
+            flatRepo.deleteById(flatId);
+        }
 
-    public Client getClient(Long clientId) {
-        return clientRepo.findById(clientId)
-                .orElseThrow();
-    }
+        public Client getClient(Long clientId) {
+            return clientRepo.findById(clientId)
+                    .orElseThrow();
+        }
 
-    public List<Client> getClients() {
-        return clientRepo.findAll();
-    }
+        public List<Client> getClients() {
+            return clientRepo.findAll();
+        }
 
-    public void deleteClient(Long clientId) {
-        clientRepo.deleteById(clientId);
+        public void deleteClient(Long clientId) {
+            clientRepo.deleteById(clientId);
+        }
     }
-}
