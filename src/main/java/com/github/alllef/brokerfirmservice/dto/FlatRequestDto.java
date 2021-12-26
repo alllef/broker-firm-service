@@ -1,5 +1,6 @@
 package com.github.alllef.brokerfirmservice.dto;
 
+import com.github.alllef.brokerfirmservice.entity.FlatRequest;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
 import lombok.*;
 
@@ -10,6 +11,6 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class FlatRequestDto {
-    private FlatRequestTmp flatRequestTmp;
+    private FlatRequest flatRequest;
     private Client client;
 }

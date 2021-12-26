@@ -14,7 +14,6 @@ import javax.persistence.Id;
 @Getter
 @EqualsAndHashCode
 @ToString
-
 public class FlatRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

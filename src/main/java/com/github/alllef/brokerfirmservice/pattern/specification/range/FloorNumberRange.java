@@ -1,6 +1,7 @@
 package com.github.alllef.brokerfirmservice.pattern.specification.range;
 
 import com.github.alllef.brokerfirmservice.dto.FlatRequestTmp;
+import com.github.alllef.brokerfirmservice.entity.FlatRequest;
 
 public class FloorNumberRange extends FlatIntRange {
     public FloorNumberRange(int actualRange) {
@@ -8,7 +9,7 @@ public class FloorNumberRange extends FlatIntRange {
     }
 
     @Override
-    public boolean test(FlatRequestTmp flatRequestTmp) {
-        return new RangeSelector<>(flatRequestTmp.getFloorNumberLowerBound(), flatRequestTmp.getFloorNumberUpperBound()).test(actualRange);
+    public boolean test(FlatRequest flatRequest) {
+        return new RangeSelector<>(flatRequest.getFloorNumberLowerBound(), flatRequest.getFloorNumberUpperBound()).test(actualRange);
     }
 }

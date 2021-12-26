@@ -1,11 +1,9 @@
 package com.github.alllef.brokerfirmservice.service;
 
+import com.github.alllef.brokerfirmservice.cache.CacheService;
 import com.github.alllef.brokerfirmservice.dto.DocumentDto;
-import com.github.alllef.brokerfirmservice.dto.FlatRequestTmp;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
-import com.github.alllef.brokerfirmservice.entity.AgreementDocument;
-import com.github.alllef.brokerfirmservice.entity.Flat;
-import com.github.alllef.brokerfirmservice.entity.PurchaseAgreement;
+import com.github.alllef.brokerfirmservice.entity.*;
 import com.github.alllef.brokerfirmservice.entity.person.Broker;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
 import com.github.alllef.brokerfirmservice.enums.DocType;
@@ -35,7 +33,8 @@ public class BrokerService {
     private final ModelMapper mapper;
     private final RequestPerformer requestPerformer;
     private final FormattingFacade formattingFacade;
-
+    private final CacheService cacheService;
+    private final FlatRequestRepo flatRequestRepo;
     /*@Transactional
     public void registerFlat(Flat flat) {
         List<Flat> flatsWithoutBroker = flatRepo.findByBrokerIdNull();
@@ -88,9 +87,13 @@ public class BrokerService {
 
     public List<FlatRequestDto> getFlatRequests(long flatId) {
         Flat flat = flatRepo.findById(flatId).orElseThrow();
-        List<FlatRequestTmp> allFlatRequestTmps = requestPerformer.getAllFlatRequests();
+        List<FlatRequestCache> allCachedFlatRequests = cacheService.getFlatRequests();
+        List<FlatRequest> serviceFlatRequests = flatRequestRepo.findAll();
+        for (FlatRequestCache flatRequestCache : allCachedFlatRequests) {
+            serviceFlatRequests.add(flatRequestCache.toFlatRequest());
+        }
 
-        List<FlatRequestDto> filteredAllRequests = allFlatRequestTmps.stream()
+        List<FlatRequestDto> filteredAllRequests = serviceFlatRequests.stream()
                 .filter(tmpFlat -> new FloorNumberRange(flat.getFloorNumber())
                         .and(new RoomNumberRange(flat.getRoomsNumber()))
                         .and(new PriceRange(flat.getPrice()))

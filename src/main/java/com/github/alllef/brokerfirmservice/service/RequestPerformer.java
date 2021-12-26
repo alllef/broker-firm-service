@@ -3,6 +3,7 @@ package com.github.alllef.brokerfirmservice.service;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestTmp;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.Flat;
+import com.github.alllef.brokerfirmservice.entity.FlatRequest;
 import com.github.alllef.brokerfirmservice.entity.person.Client;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -40,15 +41,34 @@ public class RequestPerformer {
                 .orElse(new ArrayList<>());
     }
 
-    public List<FlatRequestTmp> getAllFlatRequests() {
-        FlatRequestTmp[] response = WebClient.builder().baseUrl("http://localhost:8082")
+    public List<FlatRequestDto> getAllFilteredFlatRequests(){
+        FlatRequestDto[] response = WebClient.builder().baseUrl("http://localhost:8081")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build()
+                .get()
+                .uri(urlBuilder -> urlBuilder
+                        .path("/flat-requests")
+                        .build()
+                )
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(FlatRequestDto[].class)
+                .block();
+
+        return Optional.ofNullable(response)
+                .map(res -> Arrays.stream(res).toList())
+                .orElse(new ArrayList<>());
+    }
+
+    public List<FlatRequest> getAllUnfilteredFlatRequests() {
+        FlatRequest[] response = WebClient.builder().baseUrl("http://localhost:8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build()
                 .get()
                 .uri("/flat-requests")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(FlatRequestTmp[].class)
+                .bodyToMono(FlatRequest[].class)
                 .block();
 
         return Optional.ofNullable(response)

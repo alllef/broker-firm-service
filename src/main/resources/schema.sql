@@ -90,6 +90,24 @@ CREATE TABLE flat_request
     description              text
 );
 
+CREATE TABLE flat_request_cache
+(
+    flat_request_cache_id    serial        NOT NULL,
+    floor_number_lower_bound int4,
+    floor_number_upper_bound int4,
+    total_area_lower_bound   int4,
+    total_area_upper_bound   int4,
+    price_lower_bound        int4,
+    price_upper_bound        int4,
+    rooms_number_lower_bound int4,
+    rooms_number_upper_bound int4,
+    description              text,
+    first_name               varchar(1024) NOT NULL,
+    last_name                varchar(1024) NOT NULL,
+    email                    varchar(1024) NULL,
+    phone_number             varchar(1024) NOT NULL
+);
+
 CREATE TABLE agreement_document
 (
     agreement_document_id serial        NOT NULL,
