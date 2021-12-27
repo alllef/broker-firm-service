@@ -19,6 +19,8 @@ DROP TABLE IF EXISTS purchase_agreement CASCADE;
 DROP TABLE IF EXISTS agreement_document CASCADE;
 DROP TABLE IF EXISTS flat CASCADE;
 DROP TABLE IF EXISTS flat_request CASCADE;
+DROP TABLE IF EXISTS flat_request_cache cascade;
+
 CREATE TABLE broker
 (
     broker_id    serial        NOT NULL,

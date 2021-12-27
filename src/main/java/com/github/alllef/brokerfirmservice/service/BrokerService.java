@@ -30,11 +30,9 @@ public class BrokerService {
     private final AgreementDocumentRepo agreementDocumentRepo;
     private final PurchaseAgreementRepo purchaseAgreementRepo;
     private final BrokerRepo brokerRepo;
-    private final ModelMapper mapper;
-    private final RequestPerformer requestPerformer;
     private final FormattingFacade formattingFacade;
-    private final CacheService cacheService;
-    private final FlatRequestRepo flatRequestRepo;
+    private final FlatRequestCacheRepo flatRequestCacheRepo;
+
     /*@Transactional
     public void registerFlat(Flat flat) {
         List<Flat> flatsWithoutBroker = flatRepo.findByBrokerIdNull();
@@ -85,23 +83,18 @@ public class BrokerService {
         return new ArrayList<>();
     }
 
-    public List<FlatRequestDto> getFlatRequests(long flatId) {
+    public List<FlatRequestCache> getFlatRequests(long flatId) {
         Flat flat = flatRepo.findById(flatId).orElseThrow();
-        List<FlatRequestCache> allCachedFlatRequests = cacheService.getFlatRequests();
-        List<FlatRequest> serviceFlatRequests = flatRequestRepo.findAll();
-        for (FlatRequestCache flatRequestCache : allCachedFlatRequests) {
-            serviceFlatRequests.add(flatRequestCache.toFlatRequest());
-        }
+        long time = System.currentTimeMillis();
+        long extractFromDatabase = System.currentTimeMillis();
+        System.out.println("Time to extract from database " + (extractFromDatabase - time));
 
-        List<FlatRequestDto> filteredAllRequests = serviceFlatRequests.stream()
-                .filter(tmpFlat -> new FloorNumberRange(flat.getFloorNumber())
-                        .and(new RoomNumberRange(flat.getRoomsNumber()))
-                        .and(new PriceRange(flat.getPrice()))
-                        .and(new TotalAreaRange(flat.getTotalArea())).test(tmpFlat))
-                .map(tmpFlat -> new FlatRequestDto(tmpFlat, requestPerformer.getRequestClientById(tmpFlat.getClientId())))
-                .collect(Collectors.toList());
+        long convertTime = System.currentTimeMillis();
+        System.out.println("Convert time is " + (convertTime - extractFromDatabase));
+        List<FlatRequestCache> filteredAllRequests = flatRequestCacheRepo.findFilteredByFlat(flat.getFloorNumber(), flat.getPrice(), flat.getTotalArea(), flat.getRoomsNumber());
 
-        filteredAllRequests.addAll(requestPerformer.getFilteredFlatRequestsDto(flat));
+        long filterTime = System.currentTimeMillis();
+        System.out.println("Filter time is " + (filterTime - convertTime));
         return filteredAllRequests;
     }
 

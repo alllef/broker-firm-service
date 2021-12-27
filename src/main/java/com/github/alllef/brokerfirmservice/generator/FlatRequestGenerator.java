@@ -8,6 +8,7 @@ import com.github.alllef.brokerfirmservice.repository.FlatRequestRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ public class FlatRequestGenerator {
         return clients.get(randClientIndex).getClientId();
     }
 
+    @Order(1)
     @EventListener(ApplicationReadyEvent.class)
     public void generateFlatRequests() {
         List<Client> clients = clientRepo.findAll();
