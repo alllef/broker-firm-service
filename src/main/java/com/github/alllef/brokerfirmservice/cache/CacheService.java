@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class CacheService {
     private final FlatRequestRepo flatRequestRepo;
     private final ClientRepo clientRepo;
 
-    @EventListener(ApplicationReadyEvent.class)
-    @Order(2)
+    @Scheduled(cron = "0 0 9 * * 1-5")
     public void cacheData() {
         flatRequestCacheRepo.deleteAll();
 
