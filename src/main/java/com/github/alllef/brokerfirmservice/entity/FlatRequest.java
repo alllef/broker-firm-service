@@ -28,4 +28,18 @@ public class FlatRequest {
     private int roomsNumberLowerBound;
     private int roomsNumberUpperBound;
     private String description;
+
+    public FlatRequestCache toFlatRequestCache() {
+        return FlatRequestCache.builder()
+                .floorNumberLowerBound(this.getFloorNumberLowerBound())
+                .floorNumberUpperBound(this.getFloorNumberUpperBound())
+                .priceLowerBound(this.getPriceLowerBound())
+                .priceUpperBound(this.getPriceUpperBound())
+                .roomsNumberLowerBound(this.getRoomsNumberLowerBound())
+                .roomsNumberUpperBound(this.getRoomsNumberUpperBound())
+                .totalAreaLowerBound(this.getTotalAreaLowerBound())
+                .totalAreaUpperBound(this.getTotalAreaUpperBound())
+                .description(this.getDescription())
+                .build();
+    }
 }

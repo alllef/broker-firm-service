@@ -32,18 +32,7 @@ public class BrokerService {
     private final BrokerRepo brokerRepo;
     private final FormattingFacade formattingFacade;
     private final FlatRequestCacheRepo flatRequestCacheRepo;
-
-    /*@Transactional
-    public void registerFlat(Flat flat) {
-        List<Flat> flatsWithoutBroker = flatRepo.findByBrokerIdNull();
-        for (Flat flat : flatsWithoutBroker) {
-            Flat registered = flat.toBuilder()
-                    .isBrokerAccepted(true)
-                    .build();
-
-            flatRepo.save(registered);
-        }
-    }*/
+    private final FlatRequestRepo flatRequestRepo;
 
     public List<Broker> findAll() {
         return brokerRepo.findAll();
@@ -85,17 +74,15 @@ public class BrokerService {
 
     public List<FlatRequestCache> getFlatRequests(long flatId) {
         Flat flat = flatRepo.findById(flatId).orElseThrow();
-        long time = System.currentTimeMillis();
-        long extractFromDatabase = System.currentTimeMillis();
-        System.out.println("Time to extract from database " + (extractFromDatabase - time));
+        List<FlatRequestCache> filteredCacheRequests = flatRequestCacheRepo.findFilteredByFlat(flat.getFloorNumber(), flat.getPrice(), flat.getTotalArea(), flat.getRoomsNumber());
+        List<FlatRequestCache> flatRequestMain = flatRequestRepo.findFilteredByFlat(flat.getFloorNumber(), flat.getPrice(), flat.getTotalArea(), flat.getRoomsNumber())
+                .stream()
+                .map(FlatRequest::toFlatRequestCache)
+                .collect(Collectors.toList());
 
-        long convertTime = System.currentTimeMillis();
-        System.out.println("Convert time is " + (convertTime - extractFromDatabase));
-        List<FlatRequestCache> filteredAllRequests = flatRequestCacheRepo.findFilteredByFlat(flat.getFloorNumber(), flat.getPrice(), flat.getTotalArea(), flat.getRoomsNumber());
+        flatRequestMain.addAll(filteredCacheRequests);
 
-        long filterTime = System.currentTimeMillis();
-        System.out.println("Filter time is " + (filterTime - convertTime));
-        return filteredAllRequests;
+        return flatRequestMain;
     }
 
     public List<PurchaseAgreement> getAgreementsByBrokerId(Long brokerId) {

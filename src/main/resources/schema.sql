@@ -103,11 +103,7 @@ CREATE TABLE flat_request_cache
     price_upper_bound        int4,
     rooms_number_lower_bound int4,
     rooms_number_upper_bound int4,
-    description              text,
-    first_name               varchar(1024) NOT NULL,
-    last_name                varchar(1024) NOT NULL,
-    email                    varchar(1024) NULL,
-    phone_number             varchar(1024) NOT NULL
+    description              text
 );
 
 CREATE TABLE agreement_document
