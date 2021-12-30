@@ -17,7 +17,7 @@ import javax.persistence.Id;
 public class FlatRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long flatId;
+    private Long flatRequestId;
     private Long clientId;
     private int floorNumberLowerBound;
     private int floorNumberUpperBound;

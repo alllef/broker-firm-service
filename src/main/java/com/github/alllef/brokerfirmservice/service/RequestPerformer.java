@@ -62,12 +62,11 @@ public class RequestPerformer {
                 .orElse(new ArrayList<>());
     }
 
-    private Optional<FlatRequestPageableDto> getUnfilteredFlatRequestsPageable(int page, int size) {
+    private Optional<FlatRequestPageableDto> getUnfilteredFlatRequestsPageable(int page) {
         FlatRequestPageableDto response = webClient.get()
                 .uri("http://localhost:8082", uriBuilder -> uriBuilder
                         .path("/flat-requests")
                         .queryParam("page", String.valueOf(page))
-                        .queryParam("size", String.valueOf(size))
                         .build()
                 )
                 .accept(MediaType.APPLICATION_JSON)
@@ -82,11 +81,11 @@ public class RequestPerformer {
 
     public List<FlatRequest> getAllUnfilteredFlatRequestsPageable(int pageSize) {
         List<FlatRequest> resultList = new ArrayList<>();
-        Optional<FlatRequestPageableDto> flatRequestPageableDto = getUnfilteredFlatRequestsPageable(0, pageSize);
+        Optional<FlatRequestPageableDto> flatRequestPageableDto = getUnfilteredFlatRequestsPageable(0);
         if (flatRequestPageableDto.isPresent()) {
             resultList.addAll(flatRequestPageableDto.get().getContent());
             for (int i = 1; i < flatRequestPageableDto.get().getPagesTotal(); i++) {
-                FlatRequestPageableDto tmpFlatRequestPageableDto = getUnfilteredFlatRequestsPageable(i, pageSize).orElseThrow();
+                FlatRequestPageableDto tmpFlatRequestPageableDto = getUnfilteredFlatRequestsPageable(i).orElseThrow();
                 resultList.addAll(tmpFlatRequestPageableDto.getContent());
             }
         }

@@ -3,19 +3,14 @@ package com.github.alllef.brokerfirmservice.cache;
 import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
 import com.github.alllef.brokerfirmservice.entity.FlatRequest;
 import com.github.alllef.brokerfirmservice.entity.FlatRequestCache;
-import com.github.alllef.brokerfirmservice.entity.person.Client;
 import com.github.alllef.brokerfirmservice.repository.ClientRepo;
 import com.github.alllef.brokerfirmservice.repository.FlatRequestCacheRepo;
 import com.github.alllef.brokerfirmservice.repository.FlatRequestRepo;
 import com.github.alllef.brokerfirmservice.service.RequestPerformer;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

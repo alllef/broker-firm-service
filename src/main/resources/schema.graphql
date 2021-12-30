@@ -1,0 +1,67 @@
+type Broker {
+    brokerId: ID!,
+    firstName: String,
+    lastName: String,
+    email: String,
+    phoneNumber: String
+}
+
+type FlatRequest {
+    flatId: ID!,
+    clientId: ID,
+    brokerId: ID,
+    floorNumberLowerBound:Int
+    floorNumberUpperBound:Int
+    totalAreaLowerBound:Int,
+    totalAreaUpperBound:Int,
+    priceLowerBound:Int,
+    priceUpperBound:Int,
+    roomsNumberLowerBound:Int,
+    roomsNumberUpperBound:Int
+}
+
+input FlatRequestInput {
+    clientId: ID,
+    brokerId: ID,
+    floorNumberLowerBound:Int
+    floorNumberUpperBound:Int
+    totalAreaLowerBound:Int,
+    totalAreaUpperBound:Int,
+    priceLowerBound:Int,
+    priceUpperBound:Int,
+    roomsNumberLowerBound:Int,
+    roomsNumberUpperBound:Int
+}
+
+type Flat {
+    flatId: ID!,
+    clientId: ID,
+    brokerId: ID,
+    isBrokerAccepted:Boolean,
+    floorNumber:Int
+    totalArea:Int
+    price:Int
+    description:String
+}
+
+input FlatInput{
+    floor:Int,
+    price:Int,
+    totalArea:Int
+    roomsNumber:Int
+}
+
+type Query {
+    all:[Broker]
+    broker(id: ID):Broker!
+    flatRequest(id: ID):FlatRequest
+    filtered(flat:FlatInput):[FlatRequest]
+    all:[Flat]
+    flat(id: ID):Flat
+}
+
+type Mutation{
+    create(input:FlatRequestInput!):FlatRequest
+    update(id:ID!,input:FlatRequestInput):FlatRequest
+    delete(id:ID!):FlatRequest
+}
