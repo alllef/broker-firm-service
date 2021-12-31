@@ -14,11 +14,11 @@ import java.util.List;
 public class FlatQuery implements GraphQLQueryResolver {
     private final BrokerService brokerService;
 
-    public List<Flat> getAll() {
+    public List<Flat> getAllFlats() {
         return brokerService.findAllFlats();
     }
 
-    public Flat getFlat(long flatId) {
-
+    public Flat getFlat(long id) {
+        return brokerService.getFlat(id);
     }
 }

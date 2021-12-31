@@ -79,7 +79,7 @@ CREATE TABLE purchase_agreement
 
 CREATE TABLE flat_request
 (
-    flat_id                  serial NOT NULL,
+    flat_request_id                  serial NOT NULL,
     client_id                int8,
     floor_number_lower_bound int4,
     floor_number_upper_bound int4,

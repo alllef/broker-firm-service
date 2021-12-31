@@ -12,16 +12,28 @@ import java.util.List;
 public class FlatRequestService {
     private final FlatRequestRepo flatRequestRepo;
 
-    List<FlatRequest> getAllFlatRequests() {
+    public List<FlatRequest> getAllFlatRequests() {
         return flatRequestRepo.findAll();
     }
 
-    FlatRequest getFlatRequest(long id) {
+    public FlatRequest getFlatRequest(long id) {
         return flatRequestRepo.findById(id)
                 .orElseThrow();
     }
 
-    public void createFlatRequest(FlatRequest flatRequest){
-        if (flatRequestRepo.findById(flatRequest.getFlatId()))
+    public FlatRequest createFlatRequest(FlatRequest flatRequest) {
+        if (flatRequest.getFlatRequestId() != null)
+            throw new IllegalArgumentException();
+        return flatRequestRepo.save(flatRequest);
+    }
+
+    public FlatRequest updateFlatRequest(FlatRequest flatRequest) {
+        if (flatRequestRepo.findById(flatRequest.getFlatRequestId()).isEmpty())
+            throw new IllegalArgumentException();
+        return flatRequestRepo.save(flatRequest);
+    }
+
+    public void deleteFlatRequest(long id) {
+        flatRequestRepo.deleteById(id);
     }
 }

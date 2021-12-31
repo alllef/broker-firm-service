@@ -1,25 +1,21 @@
 package com.github.alllef.brokerfirmservice.entity;
 
-import com.github.alllef.brokerfirmservice.dto.FlatRequestDto;
-import com.github.alllef.brokerfirmservice.entity.person.Client;
 import lombok.*;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode
 @ToString
-public class FlatRequestCache {
+public class FlatRequestInput {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long flatRequestCacheId;
+    private Long clientId;
     private int floorNumberLowerBound;
     private int floorNumberUpperBound;
     private int totalAreaLowerBound;

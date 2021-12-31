@@ -7,9 +7,8 @@ type Broker {
 }
 
 type FlatRequest {
-    flatId: ID!,
+    flatRequestId: ID!,
     clientId: ID,
-    brokerId: ID,
     floorNumberLowerBound:Int
     floorNumberUpperBound:Int
     totalAreaLowerBound:Int,
@@ -17,12 +16,12 @@ type FlatRequest {
     priceLowerBound:Int,
     priceUpperBound:Int,
     roomsNumberLowerBound:Int,
-    roomsNumberUpperBound:Int
+    roomsNumberUpperBound:Int,
+    description:String
 }
 
-input FlatRequestInput {
-    clientId: ID,
-    brokerId: ID,
+type FlatRequestCache {
+    flatRequestCacheId: ID,
     floorNumberLowerBound:Int
     floorNumberUpperBound:Int
     totalAreaLowerBound:Int,
@@ -30,7 +29,8 @@ input FlatRequestInput {
     priceLowerBound:Int,
     priceUpperBound:Int,
     roomsNumberLowerBound:Int,
-    roomsNumberUpperBound:Int
+    roomsNumberUpperBound:Int,
+    description:String
 }
 
 type Flat {
@@ -52,16 +52,18 @@ input FlatInput{
 }
 
 type Query {
-    all:[Broker]
+    allBrokers:[Broker]
     broker(id: ID):Broker!
-    flatRequest(id: ID):FlatRequest
-    filtered(flat:FlatInput):[FlatRequest]
-    all:[Flat]
+    flatRequest(id: ID):FlatRequest!
+    filtered(flatId:ID):[FlatRequestCache]
+    allFlats:[Flat]
     flat(id: ID):Flat
 }
 
 type Mutation{
-    create(input:FlatRequestInput!):FlatRequest
-    update(id:ID!,input:FlatRequestInput):FlatRequest
-    delete(id:ID!):FlatRequest
+    create(clientId:ID!,floorNumberLowerBound:Int!,floorNumberUpperBound:Int!,totalAreaLowerBound:Int!,totalAreaUpperBound:Int!,priceLowerBound:Int!,
+        priceUpperBound:Int!,roomsNumberLowerBound:Int!,roomsNumberUpperBound:Int!,description:String!):FlatRequest
+    update(id:ID!,floorNumberLowerBound:Int!,floorNumberUpperBound:Int!,totalAreaLowerBound:Int!,totalAreaUpperBound:Int!,priceLowerBound:Int!,
+        priceUpperBound:Int!,roomsNumberLowerBound:Int!,roomsNumberUpperBound:Int!,description:String!):FlatRequest
+    delete(id:ID!):Boolean
 }

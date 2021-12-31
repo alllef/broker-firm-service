@@ -13,7 +13,7 @@ import java.util.List;
 public class BrokerQuery implements GraphQLQueryResolver {
     private final BrokerService brokerService;
 
-    public List<Broker> getAll() {
+    public List<Broker> getAllBrokers() {
         return brokerService.findAll();
     }
 

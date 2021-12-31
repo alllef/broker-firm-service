@@ -178,4 +178,9 @@ public class BrokerService {
 
         return purchaseAgreementRepo.findAllById(ids);
     }
+
+    public Flat getFlat(long flatId){
+        return flatRepo.findById(flatId)
+                .orElseThrow();
+    }
 }

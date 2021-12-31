@@ -84,6 +84,7 @@ public class FlatRequestGenerator {
         return clients.get(randClientIndex).getClientId();
     }
 
+    @EventListener(ApplicationReadyEvent.class)
     public void generateFlatRequests() {
         List<Client> clients = clientRepo.findAll();
         flatRequestRepo.saveAll(generateFlatRequests(100000, clients));
